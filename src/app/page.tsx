@@ -1,5 +1,15 @@
+import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import PixelBlast from '@/components/PixelBlast';
+
+const partners = [
+  { name: 'Alpha Futures', logo: '/alphafutures.svg', scale: 'scale-[1.4]' },
+  { name: 'Next Gen', logo: '/nextgen.png' },
+  { name: 'Redline', logo: '/redline.png', scale: 'scale-[1.4]' },
+  { name: 'Tradeify', logo: '/tradeify.svg' },
+  { name: 'Trading Family', logo: '/tradingfamily.svg' },
+  { name: 'Ylos', logo: '/ylos.webp' }
+];
 
 export default function Home() {
   return (
@@ -43,10 +53,19 @@ export default function Home() {
       </div>
 
       {/* Partner Logo Carousel */}
-      <div className="w-full py-10 border-t border-white/5 bg-background relative z-10 flex flex-col items-center">
-        <p className="text-sm font-medium text-muted uppercase tracking-[0.2em] mb-8 text-center">
-          Trusted by top proprietary trading firms
-        </p>
+      <div className="w-full pt-32 pb-20 bg-background relative z-10 flex flex-col items-center">
+        
+        {/* Enhanced Section Label */}
+        <div className="flex items-center justify-center gap-4 md:gap-6 w-full max-w-4xl mx-auto px-6">
+          <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-white/10 to-white/20"></div>
+          <p className="text-xs md:text-sm font-semibold uppercase tracking-[0.25em] md:tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-b from-white/80 to-white/40 text-center drop-shadow-sm">
+            Trusted by top proprietary trading firms
+          </p>
+          <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-white/10 to-white/20"></div>
+        </div>
+
+        {/* Massive Explicit Spacer */}
+        <div className="h-16 md:h-11 w-full"></div>
         
         {/* Carousel Container */}
         <div className="w-full max-w-6xl mx-auto overflow-hidden relative">
@@ -57,17 +76,37 @@ export default function Home() {
           <div className="flex w-[200%] animate-marquee">
             {/* First Set */}
             <div className="flex w-1/2 justify-around items-center">
-              {['Apex Trader Funding', 'Tradeify', 'Topstep', 'MyFundedFutures', 'Bulenox'].map((partner, i) => (
-                <div key={`set1-${i}`} className="text-2xl md:text-3xl font-bold text-white opacity-40 hover:opacity-100 transition-opacity cursor-default px-8 whitespace-nowrap">
-                  {partner}
+              {partners.map((partner, i) => (
+                <div key={`set1-${i}`} className="flex items-center">
+                  <div className="relative h-12 w-32 md:h-14 md:w-44 opacity-50 brightness-0 invert hover:brightness-100 hover:invert-0 hover:opacity-100 transition-all duration-300 cursor-pointer mx-8">
+                    <Image 
+                      src={partner.logo} 
+                      alt={partner.name} 
+                      fill 
+                      sizes="(max-width: 768px) 128px, 176px"
+                      className={`object-contain transition-transform duration-300 ${partner.scale || ''}`}
+                    />
+                  </div>
+                  {/* Subtle vertical separator */}
+                  <div className="w-[1px] h-8 bg-white/10 shrink-0 hidden md:block"></div>
                 </div>
               ))}
             </div>
             {/* Duplicate Set for Seamless Loop */}
             <div className="flex w-1/2 justify-around items-center">
-              {['Apex Trader Funding', 'Tradeify', 'Topstep', 'MyFundedFutures', 'Bulenox'].map((partner, i) => (
-                <div key={`set2-${i}`} className="text-2xl md:text-3xl font-bold text-white opacity-40 hover:opacity-100 transition-opacity cursor-default px-8 whitespace-nowrap">
-                  {partner}
+              {partners.map((partner, i) => (
+                <div key={`set2-${i}`} className="flex items-center">
+                  <div className="relative h-12 w-32 md:h-14 md:w-44 opacity-50 brightness-0 invert hover:brightness-100 hover:invert-0 hover:opacity-100 transition-all duration-300 cursor-pointer mx-8">
+                    <Image 
+                      src={partner.logo} 
+                      alt={partner.name} 
+                      fill 
+                      sizes="(max-width: 768px) 128px, 176px"
+                      className={`object-contain transition-transform duration-300 ${partner.scale || ''}`}
+                    />
+                  </div>
+                  {/* Subtle vertical separator */}
+                  <div className="w-[1px] h-8 bg-white/10 shrink-0 hidden md:block"></div>
                 </div>
               ))}
             </div>

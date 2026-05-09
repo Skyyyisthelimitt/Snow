@@ -302,7 +302,32 @@ void main(){
 
 const MAX_CLICKS = 10;
 
-const PixelBlast = ({
+export interface PixelBlastProps {
+  variant?: 'square' | 'circle' | 'triangle' | 'diamond';
+  pixelSize?: number;
+  color?: string;
+  className?: string;
+  style?: React.CSSProperties;
+  antialias?: boolean;
+  patternScale?: number;
+  patternDensity?: number;
+  liquid?: boolean;
+  liquidStrength?: number;
+  liquidRadius?: number;
+  pixelSizeJitter?: number;
+  enableRipples?: boolean;
+  rippleIntensityScale?: number;
+  rippleThickness?: number;
+  rippleSpeed?: number;
+  liquidWobbleSpeed?: number;
+  autoPauseOffscreen?: boolean;
+  speed?: number;
+  transparent?: boolean;
+  edgeFade?: number;
+  noiseAmount?: number;
+}
+
+const PixelBlast: React.FC<PixelBlastProps> = ({
   variant = 'square',
   pixelSize = 3,
   color = '#B497CF',
@@ -406,7 +431,7 @@ const PixelBlast = ({
       const quadGeom = new THREE.PlaneGeometry(2, 2);
       const quad = new THREE.Mesh(quadGeom, material);
       scene.add(quad);
-      const clock = new THREE.Clock();
+      const startTime = performance.now();
       const setSize = () => {
         const w = container.clientWidth || 1;
         const h = container.clientHeight || 1;
@@ -503,7 +528,8 @@ const PixelBlast = ({
           raf = requestAnimationFrame(animate);
           return;
         }
-        uniforms.uTime.value = timeOffset + clock.getElapsedTime() * speedRef.current;
+        const elapsedTime = (performance.now() - startTime) / 1000;
+        uniforms.uTime.value = timeOffset + elapsedTime * speedRef.current;
         if (liquidEffect) liquidEffect.uniforms.get('uTime').value = uniforms.uTime.value;
         if (composer) {
           if (touch) touch.update();
@@ -525,7 +551,6 @@ const PixelBlast = ({
         scene,
         camera,
         material,
-        clock,
         clickIx: 0,
         uniforms,
         resizeObserver: ro,
