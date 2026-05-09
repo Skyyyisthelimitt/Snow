@@ -21,7 +21,13 @@ export default function Home() {
       <div className="relative w-full h-[75vh] min-h-[600px] flex flex-col items-center justify-center">
         
         {/* Interactive Pixel Blast Background */}
-        <div className="absolute inset-0 z-0 pointer-events-auto [mask-image:linear-gradient(to_bottom,white_60%,transparent_100%)]">
+        <div 
+          className="absolute inset-0 z-0 pointer-events-auto"
+          style={{
+            maskImage: 'radial-gradient(ellipse 90% 90% at 50% 45%, transparent 20%, black 60%, transparent 100%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 90% 90% at 50% 45%, transparent 20%, black 60%, transparent 100%)'
+          }}
+        >
           <PixelBlast
             variant="square"
             pixelSize={4}
