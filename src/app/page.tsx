@@ -7,7 +7,7 @@ const partners = [
   { name: 'Next Gen', logo: '/nextgen-latest.svg' },
   { name: 'Redline', logo: '/redline.png', scale: 'scale-[1.4]' },
   { name: 'Tradeify', logo: '/tradeify-latest.svg' },
-  { name: 'Trading Family', logo: '/tradingfamily.svg', scale: 'scale-[0.7]' },
+  { name: 'Trading Family', logo: '/tradingfamily.svg', scale: 'scale-[0.95]' },
   { name: 'Ylos', logo: '/ylos-latest.svg' },
   { name: 'YRM Prop', logo: '/yrmprop-latest.svg' }
 ];
@@ -43,12 +43,25 @@ export default function Home() {
           />
         </div>
 
-        {/* Hero Content Overlay */}
-        <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 mt-16 max-w-5xl mx-auto pointer-events-none">
+        {/* Content Overlay */}
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 animate-fade-in pointer-events-none mt-12 md:mt-0">
+          
           <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight animate-fade-in leading-[1.1]">
             Strategic Discounts for the <br/>
             <span className="text-accent glow-text">Futures Market</span>
           </h1>
+          
+          {/* Massive Explicit Spacer to push SNW down */}
+          <div className="h-12 md:h-4 w-full"></div>
+
+          {/* Cinematic Sub-Title */}
+          <h2 className="mb-4 text-xs md:text-sm font-light uppercase tracking-[0.3em] md:tracking-[0.5em] text-accent drop-shadow-[0_0_10px_var(--accent)]">
+            SNW — Strategic Network of Wealth
+          </h2>
+          
+          <p className="text-muted text-lg md:text-xl max-w-2xl mx-auto leading-relaxed drop-shadow-md font-light mt-4">
+            Access elite proprietary trading firm discounts, real-time market insights, and a community built for serious traders.
+          </p>
         </div>
 
       </div>
@@ -84,6 +97,7 @@ export default function Home() {
                       src={partner.logo} 
                       alt={partner.name} 
                       fill 
+                      priority
                       sizes="(max-width: 768px) 160px, 224px"
                       className={`object-contain transition-transform duration-300 ${partner.scale || ''}`}
                     />
@@ -102,6 +116,7 @@ export default function Home() {
                       src={partner.logo} 
                       alt={partner.name} 
                       fill 
+                      priority
                       sizes="(max-width: 768px) 160px, 224px"
                       className={`object-contain transition-transform duration-300 ${partner.scale || ''}`}
                     />
