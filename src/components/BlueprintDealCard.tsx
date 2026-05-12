@@ -59,11 +59,11 @@ export default function BlueprintDealCard({
       ${isFeatured ? "border-accent/40 shadow-[0_0_25px_rgba(var(--accent-rgb),0.15)] z-20 group-hover:border-accent/10" : "border-accent/20 group-hover:border-accent/5"} 
       hover:animate-[blink_0.15s_ease-in-out_3]`}>
       
-      {/* Best Deal Badge - Atomic Amber (Perfectly Balanced Margins) */}
+      {/* Best Deal Badge - Emerald Matrix (Success Alert) */}
       {isFeatured && (
-        <div className="absolute top-3 right-2 min-w-[80px] h-6 flex items-center justify-center bg-black border border-[#FF9500]/40 rounded-sm z-40 shadow-[0_0_20px_rgba(255,149,0,0.15)] group-hover:border-[#FF9500]/80 transition-all duration-500 overflow-hidden">
-          <div className="absolute inset-0 bg-[#FF9500]/5 animate-pulse"></div>
-          <p className="relative text-[#FF9500] font-black text-[10px] uppercase tracking-[0.15em] leading-none">Best Deal</p>
+        <div className="absolute top-3 right-2 min-w-[80px] h-6 flex items-center justify-center bg-black border border-[#00FF88]/40 rounded-sm z-40 shadow-[0_0_20px_rgba(0,255,136,0.15)] group-hover:border-[#00FF88]/80 transition-all duration-500 overflow-hidden">
+          <div className="absolute inset-0 bg-[#00FF88]/5 animate-pulse"></div>
+          <p className="relative text-[#00FF88] font-black text-[10px] uppercase tracking-[0.15em] leading-none">Best Deal</p>
         </div>
       )}
 
@@ -132,6 +132,8 @@ export default function BlueprintDealCard({
       <div className="mt-auto pt-2">
         <a 
           href={link}
+          target="_blank"
+          rel="noopener noreferrer"
           className="group/btn relative w-full h-10 bg-black border border-accent/30 hover:border-accent rounded-sm flex items-center justify-center overflow-hidden transition-all duration-300"
         >
           {/* Animated Background Slide */}

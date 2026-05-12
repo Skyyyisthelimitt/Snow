@@ -197,7 +197,7 @@ export default function Home() {
               expiresIn={212400}
               claimedCount={847}
               promoCode="SNOW"
-              link="#"
+              link="https://alpha-futures.com/"
               isHot={true}
               isFeatured={true}
             />
@@ -210,22 +210,58 @@ export default function Home() {
               expiresIn={262800}
               claimedCount={1240}
               promoCode="SNOW"
-              link="#"
+              link="https://tradeify.co/"
               isHot={true}
               isFeatured={true}
             />
 
             <BlueprintDealCard 
-              firmName="Ylos"
+              firmName="Funded Futures Family"
               discount="15%"
-              logo="/ylospfp.jpg"
-              description="Experience seamless trading with Ylos evaluation accounts."
+              logo="/tradingfamily.svg"
+              description="Join the family with FFF's comprehensive trader funding and support ecosystem."
               expiresIn={432000}
               claimedCount={210}
               promoCode="SNOW"
-              link="#"
+              link="https://www.fundedfuturesfamily.com/"
               isHot={false}
               isFeatured={true}
+            />
+
+            <BlueprintDealCard 
+              firmName="NexGen"
+              discount="35%"
+              logo="/nexgenpfp.jpg"
+              description="NexGen provides advanced trading tools and professional funding for elite traders."
+              expiresIn={194400}
+              claimedCount={612}
+              promoCode="SNOW"
+              link="https://nexgenprotraderfunding.com/"
+              isFeatured={false}
+            />
+
+            <BlueprintDealCard 
+              firmName="Redline"
+              discount="20%"
+              logo="/redlinepfp.jpg"
+              description="Fast-track your trading career with Redline's industry-leading evaluation accounts."
+              expiresIn={151200}
+              claimedCount={423}
+              promoCode="SNOW"
+              link="https://www.redlinefuturesfunding.com/"
+              isFeatured={false}
+            />
+
+            <BlueprintDealCard 
+              firmName="YRM Prop"
+              discount="25%"
+              logo="/yrmpfp.jpg"
+              description="Join a global community of traders with YRM Prop's transparent funding models."
+              expiresIn={259200}
+              claimedCount={389}
+              promoCode="SNOW"
+              link="https://yrmprop.com/"
+              isFeatured={false}
             />
           </div>
         </div>
