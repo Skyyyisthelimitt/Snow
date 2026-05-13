@@ -7,6 +7,12 @@ import {
   GlobalIcon
 } from "hugeicons-react";
 import BlueprintDealCard from '@/components/BlueprintDealCard';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 const partners = [
   { name: 'Alpha Futures', logo: '/alphafutures-latest.svg' },
@@ -104,13 +110,13 @@ export default function Home() {
               <div className="flex shrink-0 items-center">
                 {partners.map((partner, i) => (
                   <div key={`set2-${i}`} className="flex items-center">
-                    <div className="relative h-16 w-40 md:h-20 md:w-56 opacity-50 brightness-0 invert hover:brightness-100 hover:invert-0 hover:opacity-100 transition-all duration-300 cursor-pointer mx-8">
+                    <div className="relative h-20 w-48 md:h-24 md:w-64 opacity-50 brightness-0 invert hover:brightness-100 hover:invert-0 hover:opacity-100 transition-all duration-300 cursor-pointer mx-10">
                       <Image 
                         src={partner.logo} 
                         alt={partner.name} 
                         fill 
                         priority
-                        sizes="(max-width: 768px) 160px, 224px"
+                        sizes="(max-width: 768px) 192px, 256px"
                         className={`object-contain transition-transform duration-300 ${partner.scale || ''}`}
                       />
                     </div>
@@ -137,8 +143,8 @@ export default function Home() {
 
           <div className="flex flex-col items-center text-center gap-4 mb-32 relative w-full">
               <h2 className="text-3xl md:text-4xl font-black tracking-[0.2em] uppercase">
-                <span className="text-white/90">Active</span>
-                <span className="ml-3 text-accent drop-shadow-[0_0_10px_rgba(var(--accent-rgb),0.4)]">Deals</span>
+                <span className="text-white" style={{ textShadow: '0 0 10px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.1)' }}>Active</span>
+                <span className="ml-3 text-accent" style={{ textShadow: '0 0 15px rgba(0,183,255,0.5), 0 0 30px rgba(0,183,255,0.2)' }}>Deals</span>
               </h2>
               <div className="flex items-center gap-6 w-full max-w-[1200px] mt-2">
                 <div className="flex-1 h-[1px] bg-gradient-to-l from-white/20 to-transparent"></div>
@@ -166,6 +172,17 @@ export default function Home() {
               isFeatured={true}
             />
             <BlueprintDealCard 
+              firmName="YRM Prop"
+              discount="25%"
+              logo="/yrmpfp.jpg"
+              description="Join a global community of traders with YRM Prop's transparent funding models."
+              expiresIn={259200}
+              claimedCount={389}
+              promoCode="SNOW"
+              link="https://yrmprop.com/"
+              isFeatured={true}
+            />
+            <BlueprintDealCard 
               firmName="Tradeify"
               discount="30%"
               logo="/tradeifypfp.jpg"
@@ -178,16 +195,15 @@ export default function Home() {
               isFeatured={true}
             />
             <BlueprintDealCard 
-              firmName="Funded Futures Family"
-              discount="15%"
-              logo="/tradingfamily.svg"
-              description="Join the family with FFF's comprehensive trader funding and support ecosystem."
-              expiresIn={432000}
-              claimedCount={210}
+              firmName="YLOS"
+              discount="25%"
+              logo="/ylospfp.jpg"
+              description="Join a global community of traders with YLOS's transparent funding models."
+              expiresIn={259200}
+              claimedCount={389}
               promoCode="SNOW"
-              link="https://www.fundedfuturesfamily.com/"
-              isHot={false}
-              isFeatured={true}
+              link="https://yrmprop.com/"
+              isFeatured={false}
             />
             <BlueprintDealCard 
               firmName="NexGen"
@@ -212,14 +228,15 @@ export default function Home() {
               isFeatured={false}
             />
             <BlueprintDealCard 
-              firmName="YRM Prop"
-              discount="25%"
-              logo="/yrmpfp.jpg"
-              description="Join a global community of traders with YRM Prop's transparent funding models."
-              expiresIn={259200}
-              claimedCount={389}
+              firmName="Funded Futures Family"
+              discount="15%"
+              logo="/fffpfp.jpg"
+              description="Join the family with FFF's comprehensive trader funding and support ecosystem."
+              expiresIn={432000}
+              claimedCount={210}
               promoCode="SNOW"
-              link="https://yrmprop.com/"
+              link="https://www.fundedfuturesfamily.com/"
+              isHot={false}
               isFeatured={false}
             />
           </div>
@@ -234,7 +251,7 @@ export default function Home() {
         <div className="max-w-[1400px] w-full mx-auto px-6 flex flex-col items-center">
           <div className="flex flex-col items-center text-center w-full">
             <h2 className="text-3xl md:text-4xl font-black tracking-[0.2em] uppercase leading-none">
-              THE SNOW <span className="text-accent">PROTOCOL</span>
+              <span className="text-white" style={{ textShadow: '0 0 10px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.1)' }}>THE SNOW</span> <span className="text-accent" style={{ textShadow: '0 0 15px rgba(0,183,255,0.5), 0 0 30px rgba(0,183,255,0.2)' }}>PROTOCOL</span>
             </h2>
             <div className="h-4 w-full" aria-hidden="true"></div>
             <div className="flex items-center gap-6 w-full max-w-[1200px] mb-10 mx-auto">
@@ -249,17 +266,17 @@ export default function Home() {
           {/* PHYSICAL SPACING BELOW HEADER */}
           <div className="h-17 w-full" aria-hidden="true"></div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-20 w-full max-w-[1200px]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-24 w-full max-w-[1400px]">
             {[
               { step: "01", title: "SCAN DEALS", desc: "Browse our manually verified list of prop firm discounts and exclusive giveaways.", icon: Shield01Icon },
               { step: "02", title: "SECURE ACCESS", desc: "Use our unique codes or join the community to unlock private capital opportunities.", icon: UserGroupIcon },
               { step: "03", title: "SCALE CAPITAL", desc: "Execute your strategy with more leverage while saving on entry costs.", icon: GlobalIcon }
             ].map((item, idx) => (
               <div key={idx} className="group relative flex flex-col items-center text-center">
-                <div className="absolute -top-12 text-8xl font-black text-white/[0.05] italic tracking-tighter select-none">{item.step}</div>
-                <div className="relative z-10 pt-8 flex flex-col items-center">
-                  <h4 className="text-xl font-bold text-white mb-4 tracking-widest">{item.title}</h4>
-                  <p className="text-sm text-white/40 leading-relaxed font-medium max-w-[280px]">{item.desc}</p>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl md:text-9xl font-black text-white/[0.04] italic tracking-tighter select-none z-0">{item.step}</div>
+                <div className="relative z-10 flex flex-col items-center">
+                  <h4 className="text-2xl md:text-3xl font-black text-white mb-6 tracking-widest">{item.title}</h4>
+                  <p className="text-base md:text-lg text-white/40 leading-relaxed font-medium max-w-[320px]">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -267,123 +284,119 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CLEAN SPACING ABOVE FAQ */}
-      <div className="h-14 w-full" aria-hidden="true"></div>
+      {/* REFINED SPACING ABOVE FAQ */}
+      <div className="h-20 w-full" aria-hidden="true"></div>
 
-      {/* SECTION 04: TERMINAL FAQ */}
-      <section className="relative py-40 bg-transparent flex flex-col items-center">
-        <div className="max-w-[800px] w-full mx-auto px-6 flex flex-col items-center">
-          <div className="flex flex-col items-center text-center mb-20">
-            <h2 className="text-3xl font-black tracking-tighter text-white uppercase italic">SYSTEM FAQ</h2>
-            <div className="w-12 h-[2px] bg-accent/30 mt-6 mx-auto"></div>
-          </div>
+      {/* SECTION 04: FAQ SECTION (Two-Column Cards) */}
+      <section id="faq" className="relative py-40 pb-80 bg-transparent flex flex-col items-center overflow-hidden">
+        <div className="max-w-[1200px] w-full mx-auto px-6 flex flex-col items-center">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-20 w-full items-start">
+            {/* LEFT SIDE: TITLES */}
+            <div className="lg:col-span-2 flex flex-col items-start text-left">
+              <h2 className="text-5xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9] mb-8">
+                <span className="text-white">SYSTEM</span> <br/>
+                <span className="text-accent">FAQ</span>
+              </h2>
+              <p className="text-lg text-white/40 leading-relaxed font-medium max-w-sm italic">
+                Can&apos;t find what you&apos;re looking for? <br/>
+                Check out our documentation or contact support.
+              </p>
+            </div>
 
-          <div className="space-y-6 w-full">
-            {[
-              { q: "Is SNOW free to use?", a: "Yes. Our platform and basic Discord access are 100% free for all traders." },
-              { q: "How often are deals updated?", a: "Our team manually verifies and updates the deal terminal every 24 hours." },
-              { q: "How do I join the giveaways?", a: "Most giveaways are hosted in our Discord. Join using the banner below to enter." },
-              { q: "Are the prop firms verified?", a: "We only partner with established, reputable prop firms with proven payout histories." }
-            ].map((faq, idx) => (
-              <div key={idx} className="group relative bg-white/[0.02] border border-white/5 p-8 rounded-2xl hover:bg-white/[0.04] transition-all duration-300">
-                <h5 className="text-white/80 font-bold mb-3 flex items-center gap-4">
-                  <span className="text-accent/50 text-[10px] font-mono">[{idx + 1}]</span> {faq.q}
-                </h5>
-                <p className="text-[15px] text-white/30 pl-10 leading-relaxed">{faq.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 05: DISCORD CTA BANNER */}
-      <section className="relative py-40 px-6 overflow-hidden flex flex-col items-center">
-        <div className="max-w-[1400px] w-full mx-auto">
-          <div className="relative bg-accent rounded-[2.5rem] p-12 md:p-24 overflow-hidden group shadow-[0_0_50px_rgba(var(--accent-rgb),0.15)]">
-            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3"></div>
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-black/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4"></div>
-            
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-16">
-              <div className="text-left max-w-2xl">
-                <h2 className="text-5xl md:text-7xl font-black text-black tracking-tighter leading-[0.9] mb-8 italic uppercase">
-                  JOIN THE <br /> ALPHA NETWORK
-                </h2>
-                <p className="text-black/60 text-xl font-bold mb-10 leading-relaxed max-w-lg">
-                  Get instant notifications for flash sales, exclusive community giveaways, and 24/7 support.
-                </p>
-                <button className="bg-black text-accent px-12 py-6 rounded-full font-black text-xl hover:scale-105 hover:bg-[#111] active:scale-95 transition-all duration-300 flex items-center gap-4 uppercase italic shadow-2xl">
-                  Connect to Discord <Shield01Icon size={24} />
-                </button>
-              </div>
-              <div className="relative hidden lg:block">
-                <div className="w-96 h-96 rounded-full border-[24px] border-black/5 flex items-center justify-center animate-spin-slow">
-                  <UserGroupIcon size={140} className="text-black/10" />
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-48 h-48 bg-black rounded-[2rem] rotate-12 flex items-center justify-center shadow-2xl group-hover:rotate-0 transition-transform duration-700">
-                    <Shield01Icon size={80} className="text-accent" />
-                  </div>
-                </div>
-              </div>
+            {/* RIGHT SIDE: ACCORDION CARDS */}
+            <div className="lg:col-span-3">
+              <Accordion type="single" collapsible className="w-full flex flex-col gap-4">
+                {[
+                  { q: "What is SNOW and how does it benefit traders?", a: "SNOW is a curated ecosystem providing verified prop firm discounts, exclusive community giveaways, and institutional-grade trading tools." },
+                  { q: "How are the prop firm discounts verified?", a: "Every partner firm goes through a rigorous vetting process. We verify payout history, support response times, and trading conditions." },
+                  { q: "Can I get a custom deal for my community?", a: "Yes. Large communities or professional trading floors can contact our Discord support for custom tier-1 partnership opportunities." },
+                  { q: "What is the Alpha Network?", a: "The Alpha Network is our private Discord environment where members get instant notifications for flash sales and private giveaways." }
+                ].map((faq, i) => (
+                  <AccordionItem key={i} value={`item-${i}`} className="border-none bg-white/[0.02] hover:bg-white/[0.04] border border-white/5 rounded-none pl-14 pr-10 mb-4 transition-all duration-500 overflow-hidden group data-[state=open]:bg-white/[0.05]">
+                    <AccordionTrigger className="py-12 hover:no-underline text-xl font-bold transition-all duration-300">
+                      {faq.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-white/40 leading-relaxed pb-8 pt-2 text-lg">
+                      <div className="animate-in fade-in slide-in-from-top-2 duration-500">
+                        {faq.a}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </div>
           </div>
+
         </div>
       </section>
+
+      {/* MASSIVE SPACING BEFORE FOOTER */}
+      <div className="h-60 w-full" aria-hidden="true"></div>
 
       {/* FOOTER */}
-      <footer className="relative py-32 bg-[#020203] border-t border-white/5 flex flex-col items-center">
-        <div className="max-w-[1400px] w-full mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
-            <div className="col-span-1 md:col-span-2">
-              <h3 className="text-3xl font-black text-white italic tracking-tighter mb-8">SNOW</h3>
-              <p className="text-white/30 text-[15px] max-w-md leading-relaxed mb-10">
-                The industry standard for verified prop firm data. Helping traders scale through precision and community-driven alpha.
+      <footer className="relative pt-60 pb-12 bg-background border-t border-white/5 flex justify-center w-full">
+        <div className="max-w-[1200px] w-full px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-16 md:gap-8 mb-24 w-full">
+            {/* BRAND SECTION */}
+            <div className="flex flex-col items-start gap-6">
+              <h3 className="text-3xl font-black text-white italic tracking-tighter">SNOW</h3>
+              <p className="text-white/40 text-sm leading-relaxed max-w-[240px]">
+                The industry standard for verified prop firm data. Helping traders scale through precision.
               </p>
-              <div className="flex gap-5">
-                <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:text-accent hover:border-accent/40 transition-all cursor-pointer group"><UserGroupIcon size={24} className="group-hover:scale-110 transition-transform" /></div>
-                <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:text-accent hover:border-accent/40 transition-all cursor-pointer group"><GlobalIcon size={24} className="group-hover:scale-110 transition-transform" /></div>
+              <div className="flex gap-4 mt-2">
+                <a href="#" className="w-10 h-10 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center text-white/40 hover:text-accent hover:border-accent/40 transition-all group">
+                  <UserGroupIcon size={18} className="group-hover:scale-110 transition-transform" />
+                </a>
+                <a href="#" className="w-10 h-10 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center text-white/40 hover:text-accent hover:border-accent/40 transition-all group">
+                  <GlobalIcon size={18} className="group-hover:scale-110 transition-transform" />
+                </a>
               </div>
             </div>
-            <div>
-              <h4 className="text-[10px] font-mono text-white/20 uppercase tracking-[0.4em] mb-10">Navigation</h4>
-              <ul className="space-y-5 text-sm font-bold text-white/40">
-                <li className="hover:text-accent transition-colors cursor-pointer">Prop Deals</li>
-                <li className="hover:text-accent transition-colors cursor-pointer">Giveaways</li>
-                <li className="hover:text-accent transition-colors cursor-pointer">Protocol</li>
-                <li className="hover:text-accent transition-colors cursor-pointer">FAQ</li>
-              </ul>
+
+            {/* NAVIGATION COLUMNS */}
+            <div className="flex flex-col gap-6 md:items-center">
+              <div className="flex flex-col gap-6">
+                <h4 className="text-white font-bold uppercase tracking-widest text-[10px]">Ecosystem</h4>
+                <ul className="flex flex-col gap-4 text-white/40 text-sm font-medium">
+                  <li><a href="#" className="hover:text-white transition-colors">Prop Deals</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Alpha Network</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Giveaways</a></li>
+                </ul>
+              </div>
             </div>
-            <div>
-              <h4 className="text-[10px] font-mono text-white/20 uppercase tracking-[0.4em] mb-10">Terminal Status</h4>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 text-[11px] font-mono text-green-500/80">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  SYSTEMS_OPERATIONAL
-                </div>
-                <div className="flex items-center gap-3 text-[11px] font-mono text-white/20">
-                  <div className="w-2 h-2 bg-white/20 rounded-full"></div>
-                  NETWORK_LOAD: 12.4%
-                </div>
-                <div className="flex items-center gap-3 text-[11px] font-mono text-white/20">
-                  <div className="w-2 h-2 bg-white/20 rounded-full"></div>
-                  REGION: GLOBAL_HUB
-                </div>
+
+            <div className="flex flex-col gap-6 md:items-center">
+              <div className="flex flex-col gap-6">
+                <h4 className="text-white font-bold uppercase tracking-widest text-[10px]">Support</h4>
+                <ul className="flex flex-col gap-4 text-white/40 text-sm font-medium">
+                  <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Discord Help</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Partnerships</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-6 md:items-end">
+              <div className="flex flex-col gap-6">
+                <h4 className="text-white font-bold uppercase tracking-widest text-[10px]">Legal</h4>
+                <ul className="flex flex-col gap-4 text-white/40 text-sm font-medium">
+                  <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Risk Disclosure</a></li>
+                </ul>
               </div>
             </div>
           </div>
-          <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 w-full">
-            <p className="text-[10px] font-mono text-white/10 uppercase tracking-[0.3em]">© 2024 SNOW_DATA_SYSTEMS // ALL_RIGHTS_RESERVED</p>
-            <div className="flex gap-10 text-[10px] font-mono text-white/20 uppercase tracking-[0.3em]">
-              <span className="hover:text-white transition-colors cursor-pointer">Privacy</span>
-              <span className="hover:text-white transition-colors cursor-pointer">Terms</span>
-              <span className="hover:text-white transition-colors cursor-pointer">Cookies</span>
-            </div>
+
+          {/* BOTTOM STRIP */}
+          <div className="pt-12 border-t border-white/5 flex flex-col items-center text-center">
+            <p className="text-white/20 text-xs font-bold tracking-[0.2em] uppercase">
+              &copy; {new Date().getFullYear()} SNOW PROTOCOL. ALL RIGHTS RESERVED.
+            </p>
           </div>
         </div>
       </footer>
-
-      {/* Bottom Spacer for Scrolling */}
-      <div className="h-[400px] w-full invisible"></div>
     </main>
   );
 }

@@ -1,8 +1,20 @@
 'use client';
-// @ts-nocheck
+
 import { Effect, EffectComposer, EffectPass, RenderPass } from 'postprocessing';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+
+interface ThreeState {
+  renderer: THREE.WebGLRenderer;
+  composer: EffectComposer;
+  material: THREE.ShaderMaterial;
+  quad: THREE.Mesh;
+  raf: number;
+  resizeObserver: ResizeObserver;
+  uniforms: any;
+  liquidEffect?: any;
+  touch?: any;
+}
 
 const createTouchTexture = () => {
   const size = 64;
