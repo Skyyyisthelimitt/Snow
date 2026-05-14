@@ -305,8 +305,8 @@ export default function Home() {
             {/* LEFT SIDE: TITLES */}
             <div className="lg:col-span-2 flex flex-col items-start text-left">
               <h2 className="text-5xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9] mb-8">
-                <span className="text-white">SYSTEM</span> <br/>
-                <span className="text-accent">FAQ</span>
+                <span className="text-white" style={{ textShadow: '0 0 10px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.1)' }}>SYSTEM</span> <br/>
+                <span className="text-accent" style={{ textShadow: '0 0 15px rgba(0,183,255,0.5), 0 0 30px rgba(0,183,255,0.2)' }}>FAQ</span>
               </h2>
               <p className="text-lg text-white/40 leading-relaxed font-medium max-w-sm italic">
                 Can&apos;t find what you&apos;re looking for? <br/>
