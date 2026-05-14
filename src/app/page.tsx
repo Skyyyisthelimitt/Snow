@@ -280,8 +280,8 @@ export default function Home() {
                 <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-accent opacity-0 group-hover:opacity-100 transition-all duration-300 z-50"></div>
 
                 <div className="relative z-10 flex flex-col items-center transition-transform duration-300 group-hover:-translate-y-1">
-                  <h4 className="text-2xl md:text-3xl font-black text-white mb-6 tracking-widest flex items-center">
-                    <span className="text-accent text-sm md:text-lg font-bold tracking-[0.1em] mr-4 opacity-60 group-hover:opacity-100 group-hover:glow-text transition-all duration-300">
+                  <h4 className="text-2xl md:text-3xl font-black text-white mb-6 tracking-widest flex items-center transition-all duration-300 group-hover:[text-shadow:0_0_10px_rgba(255,255,255,0.3),_0_0_20px_rgba(255,255,255,0.1)]">
+                    <span className="text-accent text-sm md:text-lg font-bold tracking-[0.1em] mr-4 opacity-60 group-hover:opacity-100 transition-all duration-300 group-hover:[text-shadow:0_0_15px_rgba(0,183,255,0.5),_0_0_30px_rgba(0,183,255,0.2)]">
                       /{item.step}
                     </span>
                     {item.title}
