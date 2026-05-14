@@ -31,7 +31,7 @@ const AccordionTrigger = React.forwardRef<
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        "flex flex-1 items-center justify-between py-8 font-bold transition-all hover:text-accent group text-lg md:text-xl",
+        "flex flex-1 items-center justify-between font-bold transition-all hover:text-accent group text-lg md:text-xl",
         className
       )}
       {...props}
@@ -39,8 +39,11 @@ const AccordionTrigger = React.forwardRef<
       <div className="flex items-center text-left">
         {children}
       </div>
-      <div className="relative h-6 w-6 flex items-center justify-center border border-white/20 rounded-full group-hover:border-accent transition-colors shrink-0 ml-4">
-        <Plus className="h-3 w-3 shrink-0 text-white/40 transition-transform duration-300 group-data-[state=open]:rotate-45 group-data-[state=open]:text-accent" />
+      <div className="relative h-6 w-6 flex items-center justify-center shrink-0 ml-4">
+        <div className="relative w-3 h-3 flex items-center justify-center transition-transform duration-500 group-data-[state=open]:rotate-180">
+          <div className="absolute w-full h-[1.5px] bg-white/40 group-hover:bg-white/80 group-data-[state=open]:bg-accent transition-colors duration-300 rounded-full" />
+          <div className="absolute h-full w-[1.5px] bg-white/40 group-hover:bg-white/80 group-data-[state=open]:bg-accent transition-all duration-300 group-data-[state=open]:scale-y-0 rounded-full" />
+        </div>
       </div>
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
@@ -56,7 +59,7 @@ const AccordionContent = React.forwardRef<
     className="overflow-hidden transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
     {...props}
   >
-    <div className={cn("pb-8 pt-0 text-white/40 font-medium leading-relaxed max-w-2xl", className)}>
+    <div className={cn("text-white/40 font-medium leading-relaxed max-w-2xl", className)}>
       {children}
     </div>
   </AccordionPrimitive.Content>

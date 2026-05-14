@@ -248,7 +248,7 @@ export default function Home() {
 
       {/* SECTION 03: PROTOCOL GUIDE */}
       <section className="relative py-20 bg-transparent flex flex-col items-center">
-        <div className="max-w-[1400px] w-full mx-auto px-6 flex flex-col items-center">
+        <div className="max-w-[1300px] w-full mx-auto px-6 flex flex-col items-center">
           <div className="flex flex-col items-center text-center w-full">
             <h2 className="text-3xl md:text-4xl font-black tracking-[0.2em] uppercase leading-none">
               <span className="text-white" style={{ textShadow: '0 0 10px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.1)' }}>THE SNOW</span> <span className="text-accent" style={{ textShadow: '0 0 15px rgba(0,183,255,0.5), 0 0 30px rgba(0,183,255,0.2)' }}>PROTOCOL</span>
@@ -266,16 +266,26 @@ export default function Home() {
           {/* PHYSICAL SPACING BELOW HEADER */}
           <div className="h-17 w-full" aria-hidden="true"></div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-24 w-full max-w-[1400px]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full max-w-[1300px]">
             {[
               { step: "01", title: "SCAN DEALS", desc: "Browse our manually verified list of prop firm discounts and exclusive giveaways.", icon: Shield01Icon },
               { step: "02", title: "SECURE ACCESS", desc: "Use our unique codes or join the community to unlock private capital opportunities.", icon: UserGroupIcon },
               { step: "03", title: "SCALE CAPITAL", desc: "Execute your strategy with more leverage while saving on entry costs.", icon: GlobalIcon }
             ].map((item, idx) => (
-              <div key={idx} className="group relative flex flex-col items-center text-center">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl md:text-9xl font-black text-white/[0.04] italic tracking-tighter select-none z-0">{item.step}</div>
-                <div className="relative z-10 flex flex-col items-center">
-                  <h4 className="text-2xl md:text-3xl font-black text-white mb-6 tracking-widest">{item.title}</h4>
+              <div key={idx} className="group relative flex flex-col items-center text-center cursor-default p-8">
+                {/* Solid Corner Markers (Appear on Hover) */}
+                <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-accent opacity-0 group-hover:opacity-100 transition-all duration-300 z-50"></div>
+                <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-accent opacity-0 group-hover:opacity-100 transition-all duration-300 z-50"></div>
+                <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-accent opacity-0 group-hover:opacity-100 transition-all duration-300 z-50"></div>
+                <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-accent opacity-0 group-hover:opacity-100 transition-all duration-300 z-50"></div>
+
+                <div className="relative z-10 flex flex-col items-center transition-transform duration-300 group-hover:-translate-y-1">
+                  <h4 className="text-2xl md:text-3xl font-black text-white mb-6 tracking-widest flex items-center">
+                    <span className="text-accent text-sm md:text-lg font-bold tracking-[0.1em] mr-4 opacity-60 group-hover:opacity-100 group-hover:glow-text transition-all duration-300">
+                      /{item.step}
+                    </span>
+                    {item.title}
+                  </h4>
                   <p className="text-base md:text-lg text-white/40 leading-relaxed font-medium max-w-[320px]">{item.desc}</p>
                 </div>
               </div>
@@ -313,11 +323,11 @@ export default function Home() {
                   { q: "Can I get a custom deal for my community?", a: "Yes. Large communities or professional trading floors can contact our Discord support for custom tier-1 partnership opportunities." },
                   { q: "What is the Alpha Network?", a: "The Alpha Network is our private Discord environment where members get instant notifications for flash sales and private giveaways." }
                 ].map((faq, i) => (
-                  <AccordionItem key={i} value={`item-${i}`} className="border-none bg-white/[0.02] hover:bg-white/[0.04] border border-white/5 rounded-none pl-14 pr-10 mb-4 transition-all duration-500 overflow-hidden group data-[state=open]:bg-white/[0.05]">
-                    <AccordionTrigger className="py-12 hover:no-underline text-xl font-bold transition-all duration-300">
+                  <AccordionItem key={i} value={`item-${i}`} className="border-b border-white/10 mb-8 transition-all duration-500 overflow-hidden group">
+                    <AccordionTrigger className="py-8 hover:no-underline text-xl font-bold transition-all duration-300">
                       {faq.q}
                     </AccordionTrigger>
-                    <AccordionContent className="text-white/40 leading-relaxed pb-8 pt-2 text-lg">
+                    <AccordionContent className="text-white/40 leading-relaxed pb-8 pt-6 text-lg">
                       <div className="animate-in fade-in slide-in-from-top-2 duration-500">
                         {faq.a}
                       </div>
