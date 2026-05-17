@@ -1,15 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { 
-  FireIcon, 
-  Clock01Icon, 
-  UserGroupIcon, 
   Copy01Icon, 
   Tick01Icon,
-  ArrowRight01Icon,
-  StarIcon
+  ArrowRight01Icon
 } from 'hugeicons-react';
 
 interface BlueprintDealCardProps {
@@ -29,30 +25,11 @@ export default function BlueprintDealCard({
   firmName,
   discount,
   logo,
-  description,
-  expiresIn,
-  claimedCount,
   promoCode,
   link,
-  isHot = false,
   isFeatured = false
 }: BlueprintDealCardProps) {
-  const [timeLeft, setTimeLeft] = useState(expiresIn);
   const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (seconds: number) => {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = seconds % 60;
-    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  };
 
   return (
     <div className={`group relative border border-dashed transition-all duration-500 bg-[#0A0C10] p-2.5 flex flex-col 

@@ -9,7 +9,7 @@ export default function AdminDashboard() {
     conversion: '30.6%'
   });
 
-  const [deals, setDeals] = useState([
+  const [deals] = useState([
     { id: 1, firm: 'Lucid Trading', code: 'SNOWX', clicks: 1240, status: 'Active' },
     { id: 2, firm: 'Alpha Future\'s', code: 'SNOWX', clicks: 890, status: 'Active' },
     { id: 3, firm: 'Apex Funding', code: 'SNOWX', clicks: 2100, status: 'Active' },
@@ -21,7 +21,7 @@ export default function AdminDashboard() {
         <header className="flex justify-between items-center mb-12">
           <div>
             <h1 className="text-3xl font-black">Admin <span className="text-accent">Dashboard</span></h1>
-            <p className="text-muted text-sm">Welcome back, Sky. Here's your portal performance.</p>
+            <p className="text-muted text-sm">Welcome back, Sky. Here&apos;s your portal performance.</p>
           </div>
           <div className="flex gap-4">
              <button className="glass px-6 py-2 rounded-xl text-xs font-bold hover:bg-white/10">Export Stats</button>

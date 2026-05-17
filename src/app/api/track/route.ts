@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     console.log(`[TRAFFIC] ${new Date().toISOString()} | ${type} | Firm: ${firm} | Code: ${code}`);
     
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ success: false }, { status: 500 });
   }
 }

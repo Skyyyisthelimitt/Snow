@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import Navbar from '@/components/Navbar';
@@ -26,7 +27,7 @@ export default function GiveawaysPage() {
           Active <span className="text-accent glow-text">Giveaways</span>
         </h1>
         <p className="text-muted max-w-2xl mx-auto text-lg">
-          We partner with the world's best prop firms to give away free funded accounts every week.
+          We partner with the world&apos;s best prop firms to give away free funded accounts every week.
         </p>
       </section>
 
@@ -109,7 +110,7 @@ export default function GiveawaysPage() {
                 <div className="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-accent/30">
                    <span className="text-4xl">✅</span>
                 </div>
-                <h3 className="text-2xl font-black text-white mb-2">You're in!</h3>
+                <h3 className="text-2xl font-black text-white mb-2">You&apos;re in!</h3>
                 <p className="text-muted">Keep an eye on your email for the winner announcement.</p>
                 <button onClick={() => setJoined(false)} className="mt-8 text-accent text-sm font-bold">Enter another email?</button>
              </div>

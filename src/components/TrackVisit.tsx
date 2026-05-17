@@ -11,7 +11,7 @@ export default function TrackVisit() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ type: 'PAGE_VISIT', firm: 'N/A', code: 'N/A' })
         });
-      } catch (err) {
+      } catch {
         // Silent fail
       }
     };

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React from 'react';
@@ -46,7 +47,6 @@ export default function MinimalDealCard({
                   <StarIcon 
                     key={i} 
                     size={10} 
-                    variant="solid" 
                     className={i < Math.floor(rating) ? "text-green-500" : "text-white/10"} 
                   />
                 ))}

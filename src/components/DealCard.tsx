@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -95,7 +96,7 @@ export default function DealCard({
         
         {isHot && (
           <div className="bg-orange-500/10 text-orange-400 text-[10px] font-bold px-2.5 py-1.5 rounded-full flex items-center gap-1.5 border border-orange-500/20 shadow-[0_0_10px_rgba(249,115,22,0.1)]">
-            <FireIcon size={12} variant="solid" /> Hot Deal
+            <FireIcon size={12} /> Hot Deal
           </div>
         )}
       </div>
@@ -107,7 +108,7 @@ export default function DealCard({
         </h2>
         {tagline && (
           <div className="mt-2.5 bg-accent/10 text-accent text-[11px] font-semibold px-2.5 py-1.5 rounded-xl inline-flex items-center gap-1.5 border border-accent/20">
-             <GiftIcon size={12} variant="solid" /> {tagline}
+             <GiftIcon size={12} /> {tagline}
           </div>
         )}
       </div>

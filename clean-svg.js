@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require('fs');
 const svgPath = './public/snw.svg';
 let content = fs.readFileSync(svgPath, 'utf8');
