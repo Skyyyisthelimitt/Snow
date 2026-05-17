@@ -133,3 +133,49 @@ button {
   border: none;
   outline: none;
 }
+
+/* react-tweet cleanups & layout adjustments */
+.react-tweet-theme {
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+.react-tweet-theme article {
+  margin: 0 !important;
+  padding-bottom: 0px !important;
+}
+
+/* Hide Twitter clutter & clunky links safely */
+.react-tweet-theme [class*='tweet-info'],
+.react-tweet-theme [class*='tweet-replies'],
+.react-tweet-theme [class*='CardDetails'],
+.react-tweet-theme [class*='card-details'],
+.react-tweet-theme time {
+  display: none !important;
+  height: 0px !important;
+  margin: 0px !important;
+  padding: 0px !important;
+  border: none !important;
+}
+
+/* Strip horizontal divider lines completely */
+.react-tweet-theme [class*='tweet-actions'] {
+  border-top: none !important;
+  border-bottom: none !important;
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
+  padding: 0 !important;
+}
+.react-tweet-theme [class*='tweet-body'] {
+  margin-bottom: 0px !important;
+}
+.react-tweet-theme [class*='tweet-card'],
+.react-tweet-theme [class*='CardContainer'],
+.react-tweet-theme [class*='quoted-tweet'] {
+  border: none !important;
+  margin-top: 12px !important;
+  margin-bottom: 0px !important;
+}
+
+
+

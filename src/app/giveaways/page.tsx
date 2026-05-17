@@ -4,6 +4,7 @@
 import Navbar from '@/components/Navbar';
 import PixelBlast from '@/components/PixelBlast';
 import Footer from '@/components/Footer';
+import GiveawayCard from '@/components/GiveawayCard';
 import React from 'react';
 
 export default function GiveawaysPage() {
@@ -16,9 +17,9 @@ export default function GiveawaysPage() {
       <div className="absolute top-[20%] right-[10%] w-[30%] h-[30%] bg-secondary/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
 
       {/* Hero Section */}
-      <div className="relative w-full h-[85vh] min-h-[700px] flex flex-col items-center justify-center">
+      <div className="relative w-full min-h-screen flex flex-col items-center justify-start" style={{ paddingTop: '100px' }}>
         {/* PixelBlast Background */}
-        <div className="absolute top-0 left-0 w-full h-[85vh] min-h-[700px] z-0 pointer-events-auto"
+        <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-auto"
           style={{
             maskImage: 'radial-gradient(ellipse 120% 100% at 50% 20%, transparent 10%, black 30%, black 90%, transparent 100%)',
             WebkitMaskImage: 'radial-gradient(ellipse 120% 100% at 50% 20%, transparent 10%, black 30%, black 90%, transparent 100%)'
@@ -50,14 +51,16 @@ export default function GiveawaysPage() {
 
         {/* Main Content Wrapper */}
         {/* 
-          POSITIONING GUIDE:
-          Change "top-32" below to move it up or down.
-          "top-16" -> Extremely high (touches navbar)
-          "top-32" -> Very high
-          "top-48" -> Middle-high
-          "top-[30%]" -> Uses percentages
+          POSITIONING GUIDE (VERTICAL SPACING):
+          To move the text and cards further DOWN the page, change "mt-28" below to a higher number.
+          "mt-16" -> Closer to the top navbar
+          "mt-28" -> Default positioning
+          "mt-40" -> Pushed down further
+          "mt-56" -> Much further down
+          
+          To change the space BETWEEN the text and the cards, change "mb-12" below.
         */}
-        <div className="absolute top-28 left-1/2 transform -translate-x-1/2 z-10 flex flex-col items-center text-center px-4 animate-fade-in w-full max-w-5xl pointer-events-none">
+        <div className="relative z-10 flex flex-col items-center text-center px-4 animate-fade-in w-full max-w-5xl pointer-events-none" style={{ marginBottom: '40px' }}>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4 tracking-tighter leading-tight text-center w-full">
             Active <span className="text-accent glow-text">Giveaways</span>
           </h1>
@@ -65,9 +68,22 @@ export default function GiveawaysPage() {
             We partner with the world&apos;s best prop firms to give away free funded accounts every week.
           </p>
         </div>
-      </div>
 
-      <div className="flex-1" aria-hidden="true"></div>
+        {/* Giveaway Cards Grid */}
+        <div className="relative z-10 w-full px-6 md:px-12 pointer-events-auto animate-fade-in mb-32 flex justify-center">
+          <div className="w-full max-w-7xl flex flex-wrap justify-center items-start gap-8">
+            <div className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-md">
+              <GiveawayCard tweetId="2052482529547161918" />
+            </div>
+            <div className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-md">
+              <GiveawayCard tweetId="2054292113819582864" />
+            </div>
+            <div className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-md">
+              <GiveawayCard tweetId="2051719268476354695" />
+            </div>
+          </div>
+        </div>
+      </div>
       
       <Footer />
     </main>
