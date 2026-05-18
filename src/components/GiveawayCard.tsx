@@ -14,7 +14,7 @@ export default function GiveawayCard({ tweetId, joinLink }: GiveawayCardProps) {
   const href = joinLink || `https://x.com/i/status/${tweetId}`;
 
   return (
-    <div className="relative p-5 md:p-6 rounded-[20px] flex flex-col gap-4 overflow-hidden group border border-white/5 hover:border-white/10 transition-all duration-500 bg-[#09090b] shadow-2xl w-full">
+    <div className="relative p-5 md:p-6 rounded-[20px] flex flex-col gap-3 overflow-hidden group border border-white/5 hover:border-white/10 transition-all duration-500 bg-[#09090b] shadow-2xl w-full">
       
       {/* Dynamic CSS Overrides - 100% immune to local browser CSS caching! */}
       <style dangerouslySetInnerHTML={{ __html: `
@@ -51,6 +51,8 @@ export default function GiveawayCard({ tweetId, joinLink }: GiveawayCardProps) {
         .react-tweet-theme {
           margin: 0 !important;
           width: 100% !important;
+          --tweet-bg-color: transparent !important;
+          --tweet-border: none !important;
         }
         .react-tweet-theme article {
           margin: 0 !important;
@@ -86,7 +88,7 @@ export default function GiveawayCard({ tweetId, joinLink }: GiveawayCardProps) {
       </div>
 
       {/* Action Button */}
-      <div className="relative z-10 mt-3">
+      <div className="relative z-10 mt-1">
         <a 
           href={href}
           target="_blank"

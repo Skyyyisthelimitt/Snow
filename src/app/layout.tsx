@@ -19,7 +19,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Snow Deals | Exclusive Prop Firm Discounts",
+  title: "SnowPropDeals",
   description: "Get the best deals on funded trader accounts. Exclusive coupon codes for top prop firms like Tradeify, Apex, and more.",
 };
 
