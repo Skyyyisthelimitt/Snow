@@ -24,15 +24,18 @@ export default function Navbar() {
         </div>
 
         {/* Center: Tabs */}
-        <div className="hidden md:flex items-center gap-10">
+        <div className="hidden md:flex items-center gap-8">
           <Link href="/" className="text-base font-medium text-white hover:text-accent transition-colors">
             Home
           </Link>
           <Link href="/giveaways" className="text-base font-medium text-muted hover:text-white transition-colors">
             Giveaways
           </Link>
-          <Link href="#socials" className="text-base font-medium text-muted hover:text-white transition-colors">
-            Contact Me
+          <Link href="/#deals" className="text-base font-medium text-muted hover:text-white transition-colors">
+            Deals
+          </Link>
+          <Link href="/submit-deal" className="text-base font-medium text-muted hover:text-white transition-colors">
+            Submit Deal
           </Link>
         </div>
 

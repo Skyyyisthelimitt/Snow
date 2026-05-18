@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export default function AdminDashboard() {
   const [stats] = useState({
@@ -9,11 +11,59 @@ export default function AdminDashboard() {
     conversion: '30.6%'
   });
 
-  const [deals] = useState([
-    { id: 1, firm: 'Lucid Trading', code: 'SNOWX', clicks: 1240, status: 'Active' },
-    { id: 2, firm: 'Alpha Future\'s', code: 'SNOWX', clicks: 890, status: 'Active' },
-    { id: 3, firm: 'Apex Funding', code: 'SNOWX', clicks: 2100, status: 'Active' },
-  ]);
+  const [deals, setDeals] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchDeals = async () => {
+    try {
+      const response = await fetch('/api/deals');
+      const data = await response.json();
+      setDeals(data);
+    } catch (error) {
+      console.error('Failed to fetch deals:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDeals();
+  }, []);
+
+  const activeDeals = deals.filter((d: any) => d.status === 'Active');
+  const pendingDeals = deals.filter((d: any) => d.status === 'Pending');
+
+  const handleApprove = async (id: string) => {
+    try {
+      const res = await fetch('/api/deals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'approve', id })
+      });
+      const result = await res.json();
+      if (result.success) {
+        fetchDeals();
+      }
+    } catch (error) {
+      console.error('Error approving deal:', error);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await fetch('/api/deals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', id })
+      });
+      const result = await res.json();
+      if (result.success) {
+        fetchDeals();
+      }
+    } catch (error) {
+      console.error('Error deleting deal:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#050505] text-white p-8">
@@ -49,43 +99,143 @@ export default function AdminDashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-           {/* Deals Table */}
-           <div className="lg:col-span-2 glass rounded-3xl overflow-hidden border border-white/10">
-              <div className="p-6 border-b border-white/10 flex justify-between items-center">
-                 <h3 className="font-bold">Active Deals</h3>
-                 <span className="text-[10px] text-muted uppercase font-black">{deals.length} Firms</span>
+           {/* Left Column: Active & Pending Tables */}
+           <div className="lg:col-span-2 flex flex-col gap-8">
+              
+              {/* Active Deals Table */}
+              <div className="glass rounded-3xl overflow-hidden border border-white/10">
+                 <div className="p-6 border-b border-white/10 flex justify-between items-center">
+                    <h3 className="font-bold">Active Deals</h3>
+                    <span className="text-[10px] text-muted uppercase font-black">{activeDeals.length} Firms</span>
+                 </div>
+                 <div className="overflow-x-auto">
+                   <table className="w-full text-left">
+                     <thead className="bg-white/5 text-[10px] uppercase font-black text-muted">
+                       <tr>
+                         <th className="px-6 py-4">Prop Firm</th>
+                         <th className="px-6 py-4">Ref Code</th>
+                         <th className="px-6 py-4">Total Clicks</th>
+                         <th className="px-6 py-4">Status</th>
+                         <th className="px-6 py-4">Action</th>
+                       </tr>
+                     </thead>
+                     <tbody className="text-sm">
+                       {loading ? (
+                         <tr>
+                           <td colSpan={5} className="px-6 py-8 text-center text-muted">Loading deals database...</td>
+                         </tr>
+                       ) : activeDeals.length === 0 ? (
+                         <tr>
+                           <td colSpan={5} className="px-6 py-8 text-center text-muted">No active deals found.</td>
+                         </tr>
+                       ) : activeDeals.map((deal) => (
+                         <tr key={deal.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                           <td className="px-6 py-4 font-bold">{deal.firmName}</td>
+                           <td className="px-6 py-4 text-accent font-mono">{deal.promoCode}</td>
+                           <td className="px-6 py-4">{(deal.claimedCount || 0).toLocaleString()}</td>
+                           <td className="px-6 py-4">
+                              <span className="px-2 py-1 bg-accent/10 text-accent text-[10px] rounded-full font-bold">Active</span>
+                           </td>
+                           <td className="px-6 py-4">
+                              <button 
+                                onClick={() => handleDelete(deal.id)}
+                                className="text-white/40 hover:text-red-400 transition-colors text-xs font-bold cursor-pointer"
+                              >
+                                Delete
+                              </button>
+                           </td>
+                         </tr>
+                       ))}
+                     </tbody>
+                   </table>
+                 </div>
               </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                  <thead className="bg-white/5 text-[10px] uppercase font-black text-muted">
-                    <tr>
-                      <th className="px-6 py-4">Prop Firm</th>
-                      <th className="px-6 py-4">Ref Code</th>
-                      <th className="px-6 py-4">Total Clicks</th>
-                      <th className="px-6 py-4">Status</th>
-                      <th className="px-6 py-4">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-sm">
-                    {deals.map((deal) => (
-                      <tr key={deal.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                        <td className="px-6 py-4 font-bold">{deal.firm}</td>
-                        <td className="px-6 py-4 text-accent font-mono">{deal.code}</td>
-                        <td className="px-6 py-4">{deal.clicks.toLocaleString()}</td>
-                        <td className="px-6 py-4">
-                           <span className="px-2 py-1 bg-accent/10 text-accent text-[10px] rounded-full font-bold">Active</span>
-                        </td>
-                        <td className="px-6 py-4">
-                           <button className="text-muted hover:text-white transition-colors text-xs">Edit</button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+
+              {/* Pending Submissions Table */}
+              <div className="glass rounded-3xl overflow-hidden border border-white/10">
+                 <div className="p-6 border-b border-white/10 flex justify-between items-center bg-accent/5">
+                    <h3 className="font-bold text-accent">Pending Partnerships / Deal Submissions</h3>
+                    <span className="text-[10px] bg-accent/10 text-accent px-3 py-1 rounded-full font-black uppercase tracking-wider">
+                      {pendingDeals.length} Pending
+                    </span>
+                 </div>
+                 <div className="overflow-x-auto">
+                   {loading ? (
+                     <div className="p-12 text-center text-muted text-sm">
+                       Loading submissions queue...
+                     </div>
+                   ) : pendingDeals.length === 0 ? (
+                     <div className="p-12 text-center text-muted text-sm">
+                       No pending submissions from partners at the moment.
+                     </div>
+                   ) : (
+                     <table className="w-full text-left">
+                       <thead className="bg-white/5 text-[10px] uppercase font-black text-muted">
+                         <tr>
+                           <th className="px-6 py-4">Prop Firm / Deliverables</th>
+                           <th className="px-6 py-4">Community Offer</th>
+                           <th className="px-6 py-4">Financial Proposal</th>
+                           <th className="px-6 py-4">Contact Rep</th>
+                           <th className="px-6 py-4">Actions</th>
+                         </tr>
+                       </thead>
+                       <tbody className="text-sm">
+                         {pendingDeals.map((deal: any) => (
+                           <tr key={deal.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                             <td className="px-6 py-4 max-w-xs">
+                               <p className="font-bold text-white text-base">{deal.firmName}</p>
+                               <p className="text-[11.5px] text-muted leading-relaxed mt-1 line-clamp-3" title={deal.deliverables || deal.description}>
+                                 {deal.deliverables || deal.description}
+                               </p>
+                             </td>
+                             <td className="px-6 py-4">
+                               <span className="px-2.5 py-1 bg-white/5 text-white text-xs rounded border border-white/10 font-bold">
+                                 {deal.discount}
+                               </span>
+                             </td>
+                             <td className="px-6 py-4">
+                               <div className="flex flex-col gap-1 text-xs">
+                                 <div className="flex items-center gap-1.5">
+                                   <span className="text-muted text-[10px] uppercase font-bold">Commission:</span>
+                                   <span className="text-accent font-mono font-bold">{deal.commission || 'N/A'}</span>
+                                 </div>
+                                 <div className="flex items-center gap-1.5">
+                                   <span className="text-muted text-[10px] uppercase font-bold">Retainer:</span>
+                                   <span className="text-white font-mono font-semibold">{deal.retainer || 'N/A'}</span>
+                                 </div>
+                                </div>
+                             </td>
+                             <td className="px-6 py-4 text-xs">
+                               <p className="font-bold text-white/90">{deal.contactTelegram}</p>
+                               <p className="text-[10px] text-muted mt-0.5">{deal.contactEmail}</p>
+                             </td>
+                             <td className="px-6 py-4">
+                               <div className="flex gap-2">
+                                 <button 
+                                   onClick={() => handleApprove(deal.id)}
+                                   className="px-3 py-1.5 bg-accent text-black text-xs font-black rounded-lg hover:bg-accent/80 transition-all cursor-pointer border-none"
+                                 >
+                                   Approve
+                                 </button>
+                                 <button 
+                                   onClick={() => handleDelete(deal.id)}
+                                   className="px-3 py-1.5 bg-white/5 hover:bg-red-500/20 hover:text-red-400 border border-white/5 hover:border-red-500/20 text-muted text-xs font-bold rounded-lg transition-all cursor-pointer"
+                                 >
+                                   Reject
+                                 </button>
+                               </div>
+                             </td>
+                           </tr>
+                         ))}
+                       </tbody>
+                     </table>
+                   )}
+                 </div>
               </div>
+
            </div>
 
-           {/* GA Winner Picker */}
+           {/* Right Column: GA Winner Picker */}
            <div className="glass p-6 rounded-3xl border border-white/10 h-fit">
               <h3 className="font-bold mb-6">GA Winner Picker</h3>
               <div className="bg-black/40 rounded-2xl p-6 border border-white/5 mb-6 text-center">

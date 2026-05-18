@@ -1,3 +1,6 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import PixelBlast from '@/components/PixelBlast';
@@ -22,6 +25,119 @@ const partners = [
 ];
 
 export default function Home() {
+  const [deals, setDeals] = useState<any[]>([
+    {
+      id: "1",
+      firmName: "Alpha Futures",
+      discount: "40%",
+      logo: "/alphafuturespfp.jpg",
+      description: "Alpha Futures is a simple and easy to use prop firm ~ Proudly Powered by SNW",
+      expiresIn: 212400,
+      claimedCount: 847,
+      promoCode: "SNOW",
+      link: "https://app.alpha-futures.com/signup/SNOW/",
+      isHot: true,
+      isFeatured: true,
+      status: "Active"
+    },
+    {
+      id: "2",
+      firmName: "YRM Prop",
+      discount: "25%",
+      logo: "/yrmpfp.jpg",
+      description: "Join a global community of traders with YRM Prop's transparent funding models.",
+      expiresIn: 259200,
+      claimedCount: 389,
+      promoCode: "SNOW",
+      link: "https://yrmprop.com/ref/snow",
+      isFeatured: true,
+      status: "Active"
+    },
+    {
+      id: "3",
+      firmName: "Tradeify",
+      discount: "30%",
+      logo: "/tradeifypfp.jpg",
+      description: "Tradeify offers elite futures trading challenges with instant payouts.",
+      expiresIn: 262800,
+      claimedCount: 1240,
+      promoCode: "SNOW",
+      link: "https://tradeify.co/?ref=SNOWX",
+      isHot: true,
+      isFeatured: true,
+      status: "Active"
+    },
+    {
+      id: "4",
+      firmName: "YLOS",
+      discount: "25%",
+      logo: "/ylospfp.jpg",
+      description: "Join a global community of traders with YLOS's transparent funding models.",
+      expiresIn: 259200,
+      claimedCount: 389,
+      promoCode: "SNOW",
+      link: "https://www.ylostrading.com?affiliate=SNOW",
+      isFeatured: false,
+      status: "Active"
+    },
+    {
+      id: "5",
+      firmName: "NexGen",
+      discount: "35%",
+      logo: "/nexgenpfp.jpg",
+      description: "NexGen provides advanced trading tools and professional funding for elite traders.",
+      expiresIn: 194400,
+      claimedCount: 612,
+      promoCode: "SNOW",
+      link: "https://nexgenprotraderfunding.com/?linkId=lp_263534&sourceId=snow&tenantId=protraderfunding",
+      isFeatured: false,
+      status: "Active"
+    },
+    {
+      id: "6",
+      firmName: "Redline",
+      discount: "20%",
+      logo: "/redlinepfp.jpg",
+      description: "Fast-track your trading career with Redline's industry-leading evaluation accounts.",
+      expiresIn: 151200,
+      claimedCount: 423,
+      promoCode: "SNOW",
+      link: "https://www.redlinefuturesfunding.com/register?ref=SNOW",
+      isFeatured: false,
+      status: "Active"
+    },
+    {
+      id: "7",
+      firmName: "Funded Futures Family",
+      discount: "15%",
+      logo: "/fffpfp.jpg",
+      description: "Join the family with FFF's comprehensive trader funding and support ecosystem.",
+      expiresIn: 432000,
+      claimedCount: 210,
+      promoCode: "SNOW",
+      link: "https://app.fundedfuturesfamily.com/affiliation/?ref_code=531e82e5-0f05-4e9f-8f3a-bb70bd6b7431",
+      isHot: false,
+      isFeatured: false,
+      status: "Active"
+    }
+  ]);
+
+  useEffect(() => {
+    async function fetchDeals() {
+      try {
+        const response = await fetch('/api/deals');
+        const data = await response.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setDeals(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch deals:', error);
+      }
+    }
+    fetchDeals();
+  }, []);
+
+  const activeDeals = deals.filter((d: any) => d.status === 'Active');
   return (
     <main className="min-h-screen bg-background relative overflow-y-auto overflow-x-hidden">
       <Navbar />
@@ -132,7 +248,7 @@ export default function Home() {
       </div>
       
       {/* Active Deals Section */}
-      <section className="w-full flex justify-center px-4 md:px-8 pb-40 relative z-10">
+      <section id="deals" className="w-full flex justify-center px-4 md:px-8 pb-40 relative z-10">
         <div className="w-full max-w-[1200px] flex flex-col items-center">
           
           {/* LESSENED SPACING ABOVE HEADER */}
@@ -156,86 +272,21 @@ export default function Home() {
           <div className="h-7 w-full" aria-hidden="true"></div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start relative w-full">
-            <BlueprintDealCard 
-              firmName="Alpha Futures"
-              discount="40%"
-              logo="/alphafuturespfp.jpg"
-              description="Alpha Futures is a simple and easy to use prop firm ~ Proudly Powered by SNW"
-              expiresIn={212400}
-              claimedCount={847}
-              promoCode="SNOW"
-              link="https://app.alpha-futures.com/signup/SNOW/"
-              isHot={true}
-              isFeatured={true}
-            />
-            <BlueprintDealCard 
-              firmName="YRM Prop"
-              discount="25%"
-              logo="/yrmpfp.jpg"
-              description="Join a global community of traders with YRM Prop's transparent funding models."
-              expiresIn={259200}
-              claimedCount={389}
-              promoCode="SNOW"
-              link="https://yrmprop.com/ref/snow"
-              isFeatured={true}
-            />
-            <BlueprintDealCard 
-              firmName="Tradeify"
-              discount="30%"
-              logo="/tradeifypfp.jpg"
-              description="Tradeify offers elite futures trading challenges with instant payouts."
-              expiresIn={262800}
-              claimedCount={1240}
-              promoCode="SNOW"
-              link="https://tradeify.co/?ref=SNOWX"
-              isHot={true}
-              isFeatured={true}
-            />
-            <BlueprintDealCard 
-              firmName="YLOS"
-              discount="25%"
-              logo="/ylospfp.jpg"
-              description="Join a global community of traders with YLOS's transparent funding models."
-              expiresIn={259200}
-              claimedCount={389}
-              promoCode="SNOW"
-              link="https://www.ylostrading.com?affiliate=SNOW"
-              isFeatured={false}
-            />
-            <BlueprintDealCard 
-              firmName="NexGen"
-              discount="35%"
-              logo="/nexgenpfp.jpg"
-              description="NexGen provides advanced trading tools and professional funding for elite traders."
-              expiresIn={194400}
-              claimedCount={612}
-              promoCode="SNOW"
-              link="https://nexgenprotraderfunding.com/?linkId=lp_263534&sourceId=snow&tenantId=protraderfunding"
-              isFeatured={false}
-            />
-            <BlueprintDealCard 
-              firmName="Redline"
-              discount="20%"
-              logo="/redlinepfp.jpg"
-              description="Fast-track your trading career with Redline's industry-leading evaluation accounts."
-              expiresIn={151200}
-              claimedCount={423}
-              promoCode="SNOW"
-              link="https://www.redlinefuturesfunding.com/register?ref=SNOW"
-              isFeatured={false}
-            />
-            <BlueprintDealCard 
-              firmName="Funded Futures Family"
-              discount="15%"
-              logo="/fffpfp.jpg"
-              description="Join the family with FFF's comprehensive trader funding and support ecosystem."
-              expiresIn={432000}
-              claimedCount={210}
-              promoCode="SNOW"
-              link="https://app.fundedfuturesfamily.com/affiliation/?ref_code=531e82e5-0f05-4e9f-8f3a-bb70bd6b7431"
-              isHot={false}
-              isFeatured={false}
-            />
+            {activeDeals.map((deal: any) => (
+              <BlueprintDealCard 
+                key={deal.id}
+                firmName={deal.firmName}
+                discount={deal.discount}
+                logo={deal.logo}
+                description={deal.description}
+                expiresIn={deal.expiresIn}
+                claimedCount={deal.claimedCount}
+                promoCode={deal.promoCode}
+                link={deal.link}
+                isHot={deal.isHot}
+                isFeatured={deal.isFeatured}
+              />
+            ))}
           </div>
         </div>
       </section>
