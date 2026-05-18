@@ -111,26 +111,72 @@ export default function SubmitDealPage() {
         <div className="relative z-10 w-full max-w-3xl px-6 md:px-12 mb-32 mx-auto">
           
           {/* Form Card (Shadcn Structure with Snow Brand Theme Colors) */}
-          <div className="min-w-0 w-full bg-[#131922] border border-[#B3D4FF]/10 rounded-[16px] shadow-[0_8px_40px_rgba(0,0,0,0.4)] relative overflow-hidden group hover:border-[#26B5FF]/20 transition-all duration-500">
+          <div className="min-w-0 w-full min-h-[680px] flex flex-col bg-[#131922] border border-[#B3D4FF]/10 rounded-[16px] shadow-[0_8px_40px_rgba(0,0,0,0.4)] relative overflow-hidden group hover:border-[#26B5FF]/20 transition-all duration-500">
               
               <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 blur-3xl pointer-events-none group-hover:bg-accent/10 transition-colors duration-500"></div>
 
               <div className="flex flex-col flex-1 justify-between" style={{ padding: '32px' }}>
 
               {success ? (
-                <div className="flex-1 flex flex-col items-center justify-center text-center py-16 animate-fade-in">
-                  <div className="w-16 h-16 bg-accent/10 border border-accent/20 rounded-full flex items-center justify-center text-accent mb-6 animate-pulse">
-                    <CheckmarkCircle02Icon size={32} strokeWidth={2} />
+                <div className="flex-1 flex flex-col items-center justify-center text-center py-8 animate-fade-in relative">
+                  
+                  {/* Large ambient glow behind checkmark */}
+                  <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-accent/10 blur-3xl pointer-events-none rounded-full"></div>
+                  
+                  {/* Glowing Orbit Rings */}
+                  <div className="relative w-20 h-20 mb-8 flex items-center justify-center">
+                    <div className="absolute inset-0 rounded-full border border-dashed border-accent/30 animate-[spin_10s_linear_infinite]"></div>
+                    <div className="absolute inset-1 rounded-full border border-accent/20 animate-pulse"></div>
+                    <div className="w-16 h-16 bg-[#0D1117] border border-accent/40 rounded-full flex items-center justify-center text-accent shadow-[0_0_20px_rgba(38,181,255,0.3)] z-10">
+                      <CheckmarkCircle02Icon size={32} strokeWidth={2.5} />
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-black text-white mb-3">Proposal Submitted!</h3>
-                  <p className="text-[#8B9BB4] text-sm max-w-sm mb-8">
-                    Your partnership proposal has been sent directly to Snow. We will review the terms and get in touch with you shortly.
+
+                  <span className="text-xs uppercase font-black tracking-[0.3em] text-accent mb-3">SUCCESSFULLY RECEIVED</span>
+                  <h3 className="text-4xl font-black text-white tracking-tight mb-4 bg-gradient-to-b from-white via-white to-[#B3D4FF] bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(38,181,255,0.15)]">
+                    Proposal Submitted!
+                  </h3>
+                  
+                  <p className="text-[#8B9BB4] text-sm max-w-md mb-10 leading-relaxed">
+                    Your partnership proposal has been secure-staged and sent directly to Snow B2B moderation. We will review your proposed deliverables and get in touch shortly.
                   </p>
+
+                  {/* Clean Borderless Process Timeline */}
+                  <div className="w-full max-w-md mb-10 text-left relative" style={{ paddingLeft: '36px' }}>
+                    {/* Glowing vertical line track */}
+                    <div className="absolute top-1.5 bottom-1.5 w-[2px] bg-gradient-to-b from-accent via-accent/30 to-white/5" style={{ left: '12px' }}></div>
+                    
+                    <div className="flex flex-col gap-6">
+                      {/* Step 1 */}
+                      <div className="relative flex flex-col gap-1">
+                        <div className="absolute top-1 w-3.5 h-3.5 rounded-full bg-accent border-4 border-[#131922] shadow-[0_0_8px_rgba(38,181,255,0.8)] z-10" style={{ left: '-30px' }}></div>
+                        <span className="text-sm font-black text-white">Proposal Staged</span>
+                        <span className="text-xs text-white/50">Offers stored securely in B2B queue.</span>
+                      </div>
+                      
+                      {/* Step 2 */}
+                      <div className="relative flex flex-col gap-1">
+                        <div className="absolute top-1 w-3.5 h-3.5 rounded-full bg-accent border-4 border-[#131922] animate-pulse z-10" style={{ left: '-30px' }}></div>
+                        <span className="text-sm font-black text-white flex items-center gap-2">
+                          Moderation Review <span className="text-[9px] bg-accent/15 text-accent font-black tracking-wider px-2 py-0.5 rounded-full border border-accent/25 uppercase">In Progress</span>
+                        </span>
+                        <span className="text-xs text-white/50">Snow admins evaluating deliverables and rates.</span>
+                      </div>
+                      
+                      {/* Step 3 */}
+                      <div className="relative flex flex-col gap-1">
+                        <div className="absolute top-1 w-3.5 h-3.5 rounded-full bg-white/10 border-4 border-[#131922] z-10" style={{ left: '-30px' }}></div>
+                        <span className="text-sm font-black text-white/30">Direct Contact</span>
+                        <span className="text-xs text-white/25">Our partnerships manager will reach out via business email or handle.</span>
+                      </div>
+                    </div>
+                  </div>
+
                   <button 
                     onClick={() => setSuccess(false)}
-                    className="bg-[#26B5FF] hover:bg-[#26B5FF]/90 text-[#0D1117] px-8 py-3 rounded-lg text-xs font-black transition-all active:scale-[0.98] cursor-pointer border-none"
+                    className="w-full max-w-sm h-12 bg-accent hover:bg-accent/90 text-black font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(38,181,255,0.2)] border-none cursor-pointer"
                   >
-                    Submit Another Proposal
+                    Submit Another Proposal <ArrowRight01Icon size={18} strokeWidth={2.5} />
                   </button>
                 </div>
               ) : (

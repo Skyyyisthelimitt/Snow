@@ -146,5 +146,24 @@
     "commission": "15% on code usage",
     "retainer": "N/A",
     "deliverables": "Quote tweet waitlist video, Discord announcement, and pushing waitlist."
+  },
+  {
+    "id": "1779112438846",
+    "firmName": "asd",
+    "discount": "asd",
+    "logo": "/yrmpfp.jpg",
+    "description": "asd",
+    "expiresIn": 259200,
+    "claimedCount": 0,
+    "promoCode": "SNOW",
+    "link": "https://x.com/home",
+    "isHot": false,
+    "isFeatured": false,
+    "status": "Pending",
+    "contactEmail": "sda@gmail.com",
+    "contactTelegram": "asd",
+    "commission": "asd",
+    "retainer": "asd",
+    "deliverables": "asd"
   }
 ]
