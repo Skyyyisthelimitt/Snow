@@ -98,7 +98,7 @@ export default function SubmitDealPage() {
           />
         </div>
 
-        <div className="relative z-10 flex flex-col items-center text-center px-4 animate-fade-in w-full max-w-4xl" style={{ marginBottom: '24px' }}>
+        <div className="relative z-10 flex flex-col items-center text-center px-4 animate-fade-in w-full max-w-4xl" style={{ marginBottom: '48px' }}>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4 tracking-tighter leading-tight text-center w-full">
             Partner with <span className="text-accent glow-text">SnowPropDeals</span>
           </h1>
@@ -108,76 +108,74 @@ export default function SubmitDealPage() {
         </div>
 
         {/* Form Main Content */}
-        <div className="relative z-10 w-full max-w-3xl px-6 md:px-12 mb-32 mx-auto">
+        <div 
+          style={{ marginBottom: success ? '228px' : '128px' }}
+          className={`relative z-10 w-full mx-auto transition-all duration-500 ${success ? 'max-w-2xl px-6 md:px-8' : 'max-w-3xl px-6 md:px-12'}`}
+        >
           
           {/* Form Card (Shadcn Structure with Snow Brand Theme Colors) */}
-          <div className="min-w-0 w-full min-h-[680px] flex flex-col bg-[#131922] border border-[#B3D4FF]/10 rounded-[16px] shadow-[0_8px_40px_rgba(0,0,0,0.4)] relative overflow-hidden group hover:border-[#26B5FF]/20 transition-all duration-500">
+          <div className={`min-w-0 w-full flex flex-col bg-[#131922] border border-[#B3D4FF]/10 rounded-[16px] shadow-[0_8px_40px_rgba(0,0,0,0.4)] relative overflow-hidden group hover:border-[#26B5FF]/20 transition-all duration-500 ${success ? 'min-h-[580px]' : 'min-h-[680px]'}`}>
               
               <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 blur-3xl pointer-events-none group-hover:bg-accent/10 transition-colors duration-500"></div>
 
               <div className="flex flex-col flex-1 justify-between" style={{ padding: '32px' }}>
 
               {success ? (
-                <div className="flex-1 flex flex-col items-center justify-center text-center py-8 animate-fade-in relative">
+                <div className="flex-1 flex flex-col items-center justify-center text-center py-6 animate-fade-in relative">
                   
-                  {/* Large ambient glow behind checkmark */}
-                  <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-accent/10 blur-3xl pointer-events-none rounded-full"></div>
-                  
-                  {/* Glowing Orbit Rings */}
-                  <div className="relative w-20 h-20 mb-8 flex items-center justify-center">
-                    <div className="absolute inset-0 rounded-full border border-dashed border-accent/30 animate-[spin_10s_linear_infinite]"></div>
-                    <div className="absolute inset-1 rounded-full border border-accent/20 animate-pulse"></div>
-                    <div className="w-16 h-16 bg-[#0D1117] border border-accent/40 rounded-full flex items-center justify-center text-accent shadow-[0_0_20px_rgba(38,181,255,0.3)] z-10">
-                      <CheckmarkCircle02Icon size={32} strokeWidth={2.5} />
-                    </div>
-                  </div>
-
-                  <span className="text-xs uppercase font-black tracking-[0.3em] text-accent mb-3">SUCCESSFULLY RECEIVED</span>
-                  <h3 className="text-4xl font-black text-white tracking-tight mb-4 bg-gradient-to-b from-white via-white to-[#B3D4FF] bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(38,181,255,0.15)]">
-                    Proposal Submitted!
-                  </h3>
-                  
-                  <p className="text-[#8B9BB4] text-sm max-w-md mb-12 leading-relaxed">
-                    Your partnership proposal has been secure-staged and sent directly to Snow B2B moderation. We will review your proposed deliverables and get in touch shortly.
-                  </p>
-
-                  {/* Clean Borderless Process Timeline */}
-                  <div className="w-full max-w-md mb-14 text-left relative" style={{ paddingLeft: '36px' }}>
-                    {/* Glowing vertical line track - stops exactly at center of third bullet (bottom-[46px]) */}
-                    <div className="absolute top-2.5 bottom-[46px] w-[2px] bg-gradient-to-b from-accent via-accent/30 to-white/5" style={{ left: '12px' }}></div>
+                  {/* Unified Card Center Wrapper */}
+                  <div className="flex flex-col items-center w-full max-w-md shrink-0">
                     
-                    <div className="flex flex-col gap-8">
-                      {/* Step 1 */}
-                      <div className="relative flex flex-col gap-1">
-                        <div className="absolute top-[5px] w-3.5 h-3.5 rounded-full bg-accent border-4 border-[#131922] shadow-[0_0_8px_rgba(38,181,255,0.8)] z-10" style={{ left: '-30px' }}></div>
-                        <span className="text-sm font-black text-white">Proposal Staged</span>
-                        <span className="text-xs text-white/50">Offers stored securely in B2B queue.</span>
-                      </div>
+                    {/* Header Group */}
+                    <div className="flex flex-col items-center shrink-0" style={{ marginTop: '-24px', marginBottom: '40px' }}>
+                      <h3 className="text-4xl font-black text-white tracking-tight mb-6 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                        Proposal Submitted!
+                      </h3>
                       
-                      {/* Step 2 */}
-                      <div className="relative flex flex-col gap-1">
-                        <div className="absolute top-[5px] w-3.5 h-3.5 rounded-full bg-accent border-4 border-[#131922] animate-pulse z-10" style={{ left: '-30px' }}></div>
-                        <span className="text-sm font-black text-white flex items-center gap-2">
-                          Moderation Review <span className="text-[9px] bg-accent/15 text-accent font-black tracking-wider px-2 py-0.5 rounded-full border border-accent/25 uppercase">In Progress</span>
-                        </span>
-                        <span className="text-xs text-white/50">Snow admins evaluating deliverables and rates.</span>
-                      </div>
+                      <p className="text-[#8B9BB4] text-sm leading-relaxed">
+                        Your partnership proposal has been secure-staged and sent directly to Snow B2B moderation. We will review your proposed deliverables and get in touch shortly.
+                      </p>
+                    </div>
+
+                    {/* Clean Borderless Process Timeline */}
+                    <div className="w-full text-left relative mb-0 shrink-0" style={{ paddingLeft: '36px' }}>
+                      {/* Glowing vertical line track - stops exactly at center of third bullet (bottom-[60px]) */}
+                      <div className="absolute top-2.5 bottom-[60px] w-[2px] bg-gradient-to-b from-accent via-accent/30 to-white/5" style={{ left: '12px' }}></div>
                       
-                      {/* Step 3 */}
-                      <div className="relative flex flex-col gap-1">
-                        <div className="absolute top-[5px] w-3.5 h-3.5 rounded-full bg-white/10 border-4 border-[#131922] z-10" style={{ left: '-30px' }}></div>
-                        <span className="text-sm font-black text-white/30">Direct Contact</span>
-                        <span className="text-xs text-white/25">Our partnerships manager will reach out via business email or handle.</span>
+                      <div className="flex flex-col gap-10">
+                        {/* Step 1 */}
+                        <div className="relative flex flex-col gap-1">
+                          <div className="absolute top-[5px] w-3.5 h-3.5 rounded-full bg-accent border-4 border-[#131922] shadow-[0_0_8px_rgba(38,181,255,0.8)] z-10" style={{ left: '-30px' }}></div>
+                          <span className="text-base font-black text-white">Proposal Staged</span>
+                          <span className="text-sm text-white/60">Offers stored securely in B2B queue.</span>
+                        </div>
+                        
+                        {/* Step 2 */}
+                        <div className="relative flex flex-col gap-1">
+                          <div className="absolute top-[5px] w-3.5 h-3.5 rounded-full bg-accent border-4 border-[#131922] animate-pulse z-10" style={{ left: '-30px' }}></div>
+                          <span className="text-base font-black text-white flex items-center gap-2">
+                            Moderation Review <span className="text-[10px] bg-accent/15 text-accent font-black tracking-wider px-2.5 py-0.5 rounded-sm border border-accent/25 uppercase">In Progress</span>
+                          </span>
+                          <span className="text-sm text-white/60">Snow admins evaluating deliverables and rates.</span>
+                        </div>
+                        
+                        {/* Step 3 */}
+                        <div className="relative flex flex-col gap-1">
+                          <div className="absolute top-[5px] w-3.5 h-3.5 rounded-full bg-white/10 border-4 border-[#131922] z-10" style={{ left: '-30px' }}></div>
+                          <span className="text-base font-black text-white/30">Direct Contact</span>
+                          <span className="text-sm text-white/25">Our partnerships manager will reach out via business email or handle.</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <button 
-                    onClick={() => setSuccess(false)}
-                    className="w-full max-w-sm h-12 bg-accent hover:bg-accent/90 text-black font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(38,181,255,0.2)] border-none cursor-pointer"
-                  >
-                    Submit Another Proposal <ArrowRight01Icon size={18} strokeWidth={2.5} />
-                  </button>
+                    <button 
+                      onClick={() => setSuccess(false)}
+                      style={{ marginTop: '48px' }}
+                      className="w-full max-w-sm h-12 shrink-0 bg-accent hover:bg-accent/90 text-black font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(38,181,255,0.2)] border-none cursor-pointer"
+                    >
+                      Submit Another Proposal <ArrowRight01Icon size={18} strokeWidth={2.5} />
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
