@@ -137,26 +137,26 @@ export default function SubmitDealPage() {
                     Proposal Submitted!
                   </h3>
                   
-                  <p className="text-[#8B9BB4] text-sm max-w-md mb-10 leading-relaxed">
+                  <p className="text-[#8B9BB4] text-sm max-w-md mb-12 leading-relaxed">
                     Your partnership proposal has been secure-staged and sent directly to Snow B2B moderation. We will review your proposed deliverables and get in touch shortly.
                   </p>
 
                   {/* Clean Borderless Process Timeline */}
-                  <div className="w-full max-w-md mb-10 text-left relative" style={{ paddingLeft: '36px' }}>
-                    {/* Glowing vertical line track */}
-                    <div className="absolute top-1.5 bottom-1.5 w-[2px] bg-gradient-to-b from-accent via-accent/30 to-white/5" style={{ left: '12px' }}></div>
+                  <div className="w-full max-w-md mb-14 text-left relative" style={{ paddingLeft: '36px' }}>
+                    {/* Glowing vertical line track - stops exactly at center of third bullet (bottom-[46px]) */}
+                    <div className="absolute top-2.5 bottom-[46px] w-[2px] bg-gradient-to-b from-accent via-accent/30 to-white/5" style={{ left: '12px' }}></div>
                     
-                    <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-8">
                       {/* Step 1 */}
                       <div className="relative flex flex-col gap-1">
-                        <div className="absolute top-1 w-3.5 h-3.5 rounded-full bg-accent border-4 border-[#131922] shadow-[0_0_8px_rgba(38,181,255,0.8)] z-10" style={{ left: '-30px' }}></div>
+                        <div className="absolute top-[5px] w-3.5 h-3.5 rounded-full bg-accent border-4 border-[#131922] shadow-[0_0_8px_rgba(38,181,255,0.8)] z-10" style={{ left: '-30px' }}></div>
                         <span className="text-sm font-black text-white">Proposal Staged</span>
                         <span className="text-xs text-white/50">Offers stored securely in B2B queue.</span>
                       </div>
                       
                       {/* Step 2 */}
                       <div className="relative flex flex-col gap-1">
-                        <div className="absolute top-1 w-3.5 h-3.5 rounded-full bg-accent border-4 border-[#131922] animate-pulse z-10" style={{ left: '-30px' }}></div>
+                        <div className="absolute top-[5px] w-3.5 h-3.5 rounded-full bg-accent border-4 border-[#131922] animate-pulse z-10" style={{ left: '-30px' }}></div>
                         <span className="text-sm font-black text-white flex items-center gap-2">
                           Moderation Review <span className="text-[9px] bg-accent/15 text-accent font-black tracking-wider px-2 py-0.5 rounded-full border border-accent/25 uppercase">In Progress</span>
                         </span>
@@ -165,7 +165,7 @@ export default function SubmitDealPage() {
                       
                       {/* Step 3 */}
                       <div className="relative flex flex-col gap-1">
-                        <div className="absolute top-1 w-3.5 h-3.5 rounded-full bg-white/10 border-4 border-[#131922] z-10" style={{ left: '-30px' }}></div>
+                        <div className="absolute top-[5px] w-3.5 h-3.5 rounded-full bg-white/10 border-4 border-[#131922] z-10" style={{ left: '-30px' }}></div>
                         <span className="text-sm font-black text-white/30">Direct Contact</span>
                         <span className="text-xs text-white/25">Our partnerships manager will reach out via business email or handle.</span>
                       </div>
