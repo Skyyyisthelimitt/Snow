@@ -42,13 +42,42 @@ export async function POST(request: Request) {
     const body = await request.json();
     const deals = await readDeals();
 
-    const adminActions = ['approve', 'delete', 'admin_create', 'admin_update'];
+    const adminActions = ['approve', 'delete', 'admin_create', 'admin_update', 'reorder'];
     if (body.action && adminActions.includes(body.action)) {
       const correctPassword = process.env.ADMIN_PASSWORD || 'skyadmin123';
       const clientKey = request.headers.get('x-admin-key');
       if (clientKey !== correctPassword) {
         return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
       }
+    }
+
+    if (body.action === 'reorder') {
+      const { id, direction } = body;
+      const index = deals.findIndex((d: any) => String(d.id) === String(id));
+      if (index !== -1) {
+        const activeDeals = deals.filter((d: any) => d.status === 'Active');
+        const activeIdx = activeDeals.findIndex((d: any) => String(d.id) === String(id));
+        if (direction === 'up' && activeIdx > 0) {
+          const prevActive = activeDeals[activeIdx - 1];
+          const prevIdx = deals.findIndex((d: any) => String(d.id) === String(prevActive.id));
+          if (prevIdx !== -1) {
+            const temp = deals[index];
+            deals[index] = deals[prevIdx];
+            deals[prevIdx] = temp;
+            await writeDeals(deals);
+          }
+        } else if (direction === 'down' && activeIdx < activeDeals.length - 1) {
+          const nextActive = activeDeals[activeIdx + 1];
+          const nextIdx = deals.findIndex((d: any) => String(d.id) === String(nextActive.id));
+          if (nextIdx !== -1) {
+            const temp = deals[index];
+            deals[index] = deals[nextIdx];
+            deals[nextIdx] = temp;
+            await writeDeals(deals);
+          }
+        }
+      }
+      return NextResponse.json({ success: true });
     }
 
     if (body.action === 'approve') {

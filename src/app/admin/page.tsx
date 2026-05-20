@@ -74,6 +74,18 @@ const IconLink = () => (
   </svg>
 );
 
+const IconChevronUp = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="18 15 12 9 6 15" />
+  </svg>
+);
+
+const IconChevronDown = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="6 9 12 15 18 9" />
+  </svg>
+);
+
 // Types
 type Tab = 'overview' | 'deals' | 'giveaways' | 'submissions';
 
@@ -378,7 +390,13 @@ function DealModal({ initialData, onClose, onSave }: { initialData?: any, onClos
 }
 
 // Deals Tab
-function DealsTab({ deals, loading, onDelete, onSave }: { deals: any[]; loading: boolean; onDelete: (id: string) => void; onSave: (deal: any, isEdit: boolean) => Promise<boolean> }) {
+function DealsTab({ deals, loading, onDelete, onSave, onReorder }: { 
+  deals: any[]; 
+  loading: boolean; 
+  onDelete: (id: string) => void; 
+  onSave: (deal: any, isEdit: boolean) => Promise<boolean>;
+  onReorder: (id: string, direction: 'up' | 'down') => void;
+}) {
   const [search, setSearch] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingDeal, setEditingDeal] = useState<any>(null);
@@ -411,46 +429,79 @@ function DealsTab({ deals, loading, onDelete, onSave }: { deals: any[]; loading:
                 <tr><td colSpan={5} style={{ padding: '40px 24px', textAlign: 'center', color: '#8b9bb4', fontSize: 13 }}>Loading deals database…</td></tr>
               ) : filtered.length === 0 ? (
                 <tr><td colSpan={5} style={{ padding: '40px 24px', textAlign: 'center', color: '#5c6d86', fontSize: 13 }}>No active deals found.</td></tr>
-              ) : filtered.map(deal => (
-                <tr key={deal.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)', transition: 'background 0.15s' }}
-                  onMouseOver={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.012)')}
-                  onMouseOut={e => (e.currentTarget.style.background = 'transparent')}>
-                  <td style={{ padding: '16px 24px', fontWeight: 700, fontSize: 16, color: '#fff' }}>{deal.firmName}</td>
-                  <td style={{ padding: '16px 24px', fontFamily: 'monospace', color: '#26B5FF', fontWeight: 700, fontSize: 15, textTransform: 'uppercase' }}>{deal.promoCode}</td>
-                  <td style={{ padding: '16px 24px', fontFamily: 'monospace', color: 'rgba(255,255,255,0.8)', fontSize: 15 }}>{(deal.claimedCount || 0).toLocaleString()}</td>
-                  <td style={{ padding: '16px 24px' }}><StatusBadge status="Active" /></td>
-                  <td style={{ padding: '16px 24px', textAlign: 'right' }}>
-                    <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-                      <button
-                        onClick={() => setEditingDeal(deal)}
-                        style={{
-                          background: 'rgba(38,181,255,0.06)', border: '1px solid rgba(38,181,255,0.3)',
-                          color: '#26B5FF', padding: '7px 16px', fontSize: 11, fontWeight: 900,
-                          letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
-                          transition: 'all 0.2s',
-                        }}
-                        onMouseOver={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(38,181,255,0.12)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(38,181,255,0.6)'; }}
-                        onMouseOut={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(38,181,255,0.06)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(38,181,255,0.3)'; }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => onDelete(deal.id)}
-                        style={{
-                          background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.3)',
-                          color: '#f87171', padding: '7px 16px', fontSize: 11, fontWeight: 900,
-                          letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
-                          transition: 'all 0.2s',
-                        }}
-                        onMouseOver={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(239,68,68,0.12)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(239,68,68,0.6)'; }}
-                        onMouseOut={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(239,68,68,0.06)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(239,68,68,0.3)'; }}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              ) : filtered.map(deal => {
+                const activeIdx = activeDeals.findIndex(d => String(d.id) === String(deal.id));
+                const isFirstActive = activeIdx === 0;
+                const isLastActive = activeIdx === activeDeals.length - 1;
+                return (
+                  <tr key={deal.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)', transition: 'background 0.15s' }}
+                    onMouseOver={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.012)')}
+                    onMouseOut={e => (e.currentTarget.style.background = 'transparent')}>
+                    <td style={{ padding: '16px 24px', fontWeight: 700, fontSize: 16, color: '#fff' }}>{deal.firmName}</td>
+                    <td style={{ padding: '16px 24px', fontFamily: 'monospace', color: '#26B5FF', fontWeight: 700, fontSize: 15, textTransform: 'uppercase' }}>{deal.promoCode}</td>
+                    <td style={{ padding: '16px 24px', fontFamily: 'monospace', color: 'rgba(255,255,255,0.8)', fontSize: 15 }}>{(deal.claimedCount || 0).toLocaleString()}</td>
+                    <td style={{ padding: '16px 24px' }}><StatusBadge status="Active" /></td>
+                    <td style={{ padding: '16px 24px', textAlign: 'right' }}>
+                      <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', alignItems: 'center' }}>
+                        <button
+                          onClick={() => onReorder(deal.id, 'up')}
+                          disabled={isFirstActive}
+                          style={{
+                            background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
+                            color: isFirstActive ? '#5c6d86' : '#fff', padding: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            cursor: isFirstActive ? 'not-allowed' : 'pointer', transition: 'all 0.2s', opacity: isFirstActive ? 0.3 : 1
+                          }}
+                          onMouseOver={e => { if (!isFirstActive) { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.08)'; } }}
+                          onMouseOut={e => { if (!isFirstActive) { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)'; } }}
+                          title="Move Up"
+                        >
+                          <IconChevronUp />
+                        </button>
+                        <button
+                          onClick={() => onReorder(deal.id, 'down')}
+                          disabled={isLastActive}
+                          style={{
+                            background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
+                            color: isLastActive ? '#5c6d86' : '#fff', padding: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            cursor: isLastActive ? 'not-allowed' : 'pointer', transition: 'all 0.2s', opacity: isLastActive ? 0.3 : 1
+                          }}
+                          onMouseOver={e => { if (!isLastActive) { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.08)'; } }}
+                          onMouseOut={e => { if (!isLastActive) { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)'; } }}
+                          title="Move Down"
+                        >
+                          <IconChevronDown />
+                        </button>
+                        <button
+                          onClick={() => setEditingDeal(deal)}
+                          style={{
+                            background: 'rgba(38,181,255,0.06)', border: '1px solid rgba(38,181,255,0.3)',
+                            color: '#26B5FF', padding: '7px 16px', fontSize: 11, fontWeight: 900,
+                            letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
+                            transition: 'all 0.2s',
+                          }}
+                          onMouseOver={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(38,181,255,0.12)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(38,181,255,0.6)'; }}
+                          onMouseOut={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(38,181,255,0.06)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(38,181,255,0.3)'; }}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => onDelete(deal.id)}
+                          style={{
+                            background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.3)',
+                            color: '#f87171', padding: '7px 16px', fontSize: 11, fontWeight: 900,
+                            letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
+                            transition: 'all 0.2s',
+                          }}
+                          onMouseOver={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(239,68,68,0.12)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(239,68,68,0.6)'; }}
+                          onMouseOut={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(239,68,68,0.06)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(239,68,68,0.3)'; }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -873,6 +924,21 @@ export default function AdminDashboard() {
     } catch (err) { console.error(err); }
   };
 
+  const handleReorderDeal = async (id: string, direction: 'up' | 'down') => {
+    try {
+      const res = await fetch('/api/deals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-key': sessionStorage.getItem('admin_key') || ''
+        },
+        body: JSON.stringify({ action: 'reorder', id, direction })
+      });
+      const result = await res.json();
+      if (result.success) fetchDeals();
+    } catch (err) { console.error(err); }
+  };
+
   const handleDeleteGiveaway = async (id: string) => {
     try {
       const res = await fetch('/api/giveaways', {
@@ -1173,7 +1239,7 @@ export default function AdminDashboard() {
               <OverviewTab deals={deals} giveaways={giveaways} traffic={traffic} />
             )}
             {activeTab === 'deals' && (
-              <DealsTab deals={deals} loading={loading} onDelete={handleDelete} onSave={handleSaveDeal} />
+              <DealsTab deals={deals} loading={loading} onDelete={handleDelete} onSave={handleSaveDeal} onReorder={handleReorderDeal} />
             )}
             {activeTab === 'giveaways' && (
               <GiveawaysTab giveaways={giveaways} onSave={handleSaveGiveaway} onDelete={handleDeleteGiveaway} />
