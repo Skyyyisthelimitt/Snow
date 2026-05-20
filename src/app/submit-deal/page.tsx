@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import PixelBlast from '@/components/PixelBlast';
 import Footer from '@/components/Footer';
-import { 
-  ArrowRight01Icon, 
-  Mail01Icon, 
-  SparklesIcon, 
+import {
+  ArrowRight01Icon,
+  Mail01Icon,
+  SparklesIcon,
   CheckmarkCircle02Icon
 } from 'hugeicons-react';
 
@@ -69,7 +69,7 @@ export default function SubmitDealPage() {
 
       {/* Hero Header */}
       <div className="relative w-full flex flex-col items-center justify-start z-10" style={{ paddingTop: '100px' }}>
-        
+
         {/* PixelBlast Background */}
         <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none"
           style={{
@@ -108,30 +108,30 @@ export default function SubmitDealPage() {
         </div>
 
         {/* Form Main Content */}
-        <div 
+        <div
           style={{ marginBottom: success ? '228px' : '128px' }}
           className={`relative z-10 w-full mx-auto transition-all duration-500 ${success ? 'max-w-2xl px-6 md:px-8' : 'max-w-3xl px-6 md:px-12'}`}
         >
-          
+
           {/* Form Card (Shadcn Structure with Snow Brand Theme Colors) */}
           <div className={`min-w-0 w-full flex flex-col bg-[#131922] border border-[#B3D4FF]/10 rounded-[16px] shadow-[0_8px_40px_rgba(0,0,0,0.4)] relative overflow-hidden group hover:border-[#26B5FF]/20 transition-all duration-500 ${success ? 'min-h-[580px]' : 'min-h-[680px]'}`}>
-              
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 blur-3xl pointer-events-none group-hover:bg-accent/10 transition-colors duration-500"></div>
 
-              <div className="flex flex-col flex-1 justify-between" style={{ padding: '32px' }}>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 blur-3xl pointer-events-none group-hover:bg-accent/10 transition-colors duration-500"></div>
+
+            <div className="flex flex-col flex-1 justify-between" style={{ padding: '32px' }}>
 
               {success ? (
                 <div className="flex-1 flex flex-col items-center justify-center text-center py-6 animate-fade-in relative">
-                  
+
                   {/* Unified Card Center Wrapper */}
                   <div className="flex flex-col items-center w-full max-w-md shrink-0">
-                    
+
                     {/* Header Group */}
                     <div className="flex flex-col items-center shrink-0" style={{ marginTop: '-24px', marginBottom: '40px' }}>
                       <h3 className="text-4xl font-black text-white tracking-tight mb-6 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
                         Proposal Submitted!
                       </h3>
-                      
+
                       <p className="text-[#8B9BB4] text-sm leading-relaxed">
                         Your partnership proposal has been secure-staged and sent directly to Snow B2B moderation. We will review your proposed deliverables and get in touch shortly.
                       </p>
@@ -141,7 +141,7 @@ export default function SubmitDealPage() {
                     <div className="w-full text-left relative mb-0 shrink-0" style={{ paddingLeft: '36px' }}>
                       {/* Glowing vertical line track - stops exactly at center of third bullet (bottom-[60px]) */}
                       <div className="absolute top-2.5 bottom-[60px] w-[2px] bg-gradient-to-b from-accent via-accent/30 to-white/5" style={{ left: '12px' }}></div>
-                      
+
                       <div className="flex flex-col gap-10">
                         {/* Step 1 */}
                         <div className="relative flex flex-col gap-1">
@@ -149,7 +149,7 @@ export default function SubmitDealPage() {
                           <span className="text-base font-black text-white">Proposal Staged</span>
                           <span className="text-sm text-white/60">Offers stored securely in B2B queue.</span>
                         </div>
-                        
+
                         {/* Step 2 */}
                         <div className="relative flex flex-col gap-1">
                           <div className="absolute top-[5px] w-3.5 h-3.5 rounded-full bg-accent border-4 border-[#131922] animate-pulse z-10" style={{ left: '-30px' }}></div>
@@ -158,7 +158,7 @@ export default function SubmitDealPage() {
                           </span>
                           <span className="text-sm text-white/60">Snow admins evaluating deliverables and rates.</span>
                         </div>
-                        
+
                         {/* Step 3 */}
                         <div className="relative flex flex-col gap-1">
                           <div className="absolute top-[5px] w-3.5 h-3.5 rounded-full bg-white/10 border-4 border-[#131922] z-10" style={{ left: '-30px' }}></div>
@@ -168,7 +168,7 @@ export default function SubmitDealPage() {
                       </div>
                     </div>
 
-                    <button 
+                    <button
                       onClick={() => setSuccess(false)}
                       style={{ marginTop: '48px' }}
                       className="w-full max-w-sm h-12 shrink-0 bg-accent hover:bg-accent/90 text-black font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(38,181,255,0.2)] border-none cursor-pointer"
@@ -187,12 +187,12 @@ export default function SubmitDealPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex flex-col">
                       <label className="text-xs font-semibold text-white/90 mb-2.5">Prop Firm Name</label>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         required
-                        placeholder="e.g. Atlas Futures"
+                        placeholder="e.g. Futures Firm"
                         value={formData.firmName}
-                        onChange={(e) => setFormData({...formData, firmName: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, firmName: e.target.value })}
                         className="h-10 w-full rounded-md border border-[#B3D4FF]/10 bg-[#0D1117] text-sm text-white placeholder-[#8B9BB4]/30 focus:border-[#26B5FF] focus:ring-1 focus:ring-[#26B5FF] outline-none transition-all duration-200"
                         style={{ paddingLeft: '10px', paddingRight: '20px' }}
                       />
@@ -201,12 +201,12 @@ export default function SubmitDealPage() {
 
                     <div className="flex flex-col">
                       <label className="text-xs font-semibold text-white/90 mb-2.5">Official Website / Ref URL</label>
-                      <input 
-                        type="url" 
+                      <input
+                        type="url"
                         required
                         placeholder="e.g. https://atlasfutures.com"
                         value={formData.link}
-                        onChange={(e) => setFormData({...formData, link: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, link: e.target.value })}
                         className="h-10 w-full rounded-md border border-[#B3D4FF]/10 bg-[#0D1117] text-sm text-white placeholder-[#8B9BB4]/30 focus:border-[#26B5FF] focus:ring-1 focus:ring-[#26B5FF] outline-none transition-all duration-200"
                         style={{ paddingLeft: '10px', paddingRight: '20px' }}
                       />
@@ -216,12 +216,12 @@ export default function SubmitDealPage() {
 
                   <div className="flex flex-col w-1/2">
                     <label className="text-xs font-semibold text-white/90 mb-2.5">Exclusive Community Offer / Discount</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       required
                       placeholder="e.g. 50% OFF Launch Promo"
                       value={formData.discount}
-                      onChange={(e) => setFormData({...formData, discount: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, discount: e.target.value })}
                       className="h-10 w-full rounded-md border border-[#B3D4FF]/10 bg-[#0D1117] text-sm text-white placeholder-[#8B9BB4]/30 focus:border-[#26B5FF] focus:ring-1 focus:ring-[#26B5FF] outline-none transition-all duration-200"
                       style={{ paddingLeft: '10px', paddingRight: '20px' }}
                     />
@@ -233,12 +233,12 @@ export default function SubmitDealPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex flex-col">
                       <label className="text-xs font-semibold text-white/90 mb-2.5">Proposed Commission Rate (%)</label>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         required
                         placeholder="e.g. 15% on code usage"
                         value={formData.commission}
-                        onChange={(e) => setFormData({...formData, commission: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, commission: e.target.value })}
                         className="h-10 w-full rounded-md border border-[#B3D4FF]/10 bg-[#0D1117] text-sm text-white placeholder-[#8B9BB4]/30 focus:border-[#26B5FF] focus:ring-1 focus:ring-[#26B5FF] outline-none transition-all duration-200"
                         style={{ paddingLeft: '10px', paddingRight: '20px' }}
                       />
@@ -247,12 +247,12 @@ export default function SubmitDealPage() {
 
                     <div className="flex flex-col">
                       <label className="text-xs font-semibold text-white/90 mb-2.5">Proposed Retainer / Flat Fee ($)</label>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         required
                         placeholder="e.g. $200 flat fee or N/A"
                         value={formData.retainer}
-                        onChange={(e) => setFormData({...formData, retainer: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, retainer: e.target.value })}
                         className="h-10 w-full rounded-md border border-[#B3D4FF]/10 bg-[#0D1117] text-sm text-white placeholder-[#8B9BB4]/30 focus:border-[#26B5FF] focus:ring-1 focus:ring-[#26B5FF] outline-none transition-all duration-200"
                         style={{ paddingLeft: '10px', paddingRight: '20px' }}
                       />
@@ -262,12 +262,12 @@ export default function SubmitDealPage() {
 
                   <div className="flex flex-col">
                     <label className="text-xs font-semibold text-white/90 mb-2.5">Expected Deliverables / Promotion Support</label>
-                    <textarea 
+                    <textarea
                       required
                       rows={3}
                       placeholder="e.g. Quote tweet waitlist video, Discord announcement, and pushing waitlist."
                       value={formData.deliverables}
-                      onChange={(e) => setFormData({...formData, deliverables: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, deliverables: e.target.value })}
                       className="min-h-[80px] w-full rounded-md border border-[#B3D4FF]/10 bg-[#0D1117] text-sm text-white placeholder-[#8B9BB4]/30 focus:border-[#26B5FF] focus:ring-1 focus:ring-[#26B5FF] outline-none transition-all duration-200 resize-none leading-relaxed"
                       style={{ paddingLeft: '10px', paddingRight: '20px', paddingTop: '12px', paddingBottom: '12px' }}
                     />
@@ -279,12 +279,12 @@ export default function SubmitDealPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex flex-col">
                       <label className="text-xs font-semibold text-white/90 mb-2.5">Your Business Email</label>
-                      <input 
-                        type="email" 
+                      <input
+                        type="email"
                         required
                         placeholder="e.g. partners@propfirm.com"
                         value={formData.contactEmail}
-                        onChange={(e) => setFormData({...formData, contactEmail: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
                         className="h-10 w-full rounded-md border border-[#B3D4FF]/10 bg-[#0D1117] text-sm text-white placeholder-[#8B9BB4]/30 focus:border-[#26B5FF] focus:ring-1 focus:ring-[#26B5FF] outline-none transition-all duration-200"
                         style={{ paddingLeft: '10px', paddingRight: '20px' }}
                       />
@@ -293,12 +293,12 @@ export default function SubmitDealPage() {
 
                     <div className="flex flex-col">
                       <label className="text-xs font-semibold text-white/90 mb-2.5">X/Discord Handle</label>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         required
                         placeholder="e.g. @PipsCabal"
                         value={formData.contactTelegram}
-                        onChange={(e) => setFormData({...formData, contactTelegram: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, contactTelegram: e.target.value })}
                         className="h-10 w-full rounded-md border border-[#B3D4FF]/10 bg-[#0D1117] text-sm text-white placeholder-[#8B9BB4]/30 focus:border-[#26B5FF] focus:ring-1 focus:ring-[#26B5FF] outline-none transition-all duration-200"
                         style={{ paddingLeft: '10px', paddingRight: '20px' }}
                       />
@@ -306,8 +306,8 @@ export default function SubmitDealPage() {
                     </div>
                   </div>
 
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     disabled={loading}
                     className="w-full mt-2 h-12 bg-accent hover:bg-accent/90 text-black font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(38,181,255,0.2)] border-none disabled:opacity-50 cursor-pointer"
                   >
@@ -319,10 +319,10 @@ export default function SubmitDealPage() {
                   </button>
                 </form>
               )}
-              </div>
             </div>
           </div>
         </div>
+      </div>
 
       <Footer />
     </main>
