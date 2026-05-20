@@ -106,7 +106,7 @@ export default function Footer() {
               <div className="flex flex-col gap-6">
                 <h4 className="text-white font-bold text-base">Partners</h4>
                 <ul className="flex flex-col gap-5 text-white/40 text-[15px]">
-                  <li><a href="/" className="hover:text-white transition-colors">Become a partner</a></li>
+                  <li><a href="/submit-deal" className="hover:text-white transition-colors">Become a partner</a></li>
                   <li><a href="/" className="hover:text-white transition-colors">Prop Firm Login</a></li>
                   <li><a href="/" className="hover:text-white transition-colors">API Integration</a></li>
                 </ul>
