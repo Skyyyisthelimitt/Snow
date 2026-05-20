@@ -94,25 +94,6 @@
     "status": "Active"
   },
   {
-    "id": "1779112438846",
-    "firmName": "asd",
-    "discount": "asd",
-    "logo": "/yrmpfp.jpg",
-    "description": "asd",
-    "expiresIn": 259200,
-    "claimedCount": 0,
-    "promoCode": "SNOW",
-    "link": "https://x.com/home",
-    "isHot": false,
-    "isFeatured": false,
-    "status": "Pending",
-    "contactEmail": "sda@gmail.com",
-    "contactTelegram": "asd",
-    "commission": "asd",
-    "retainer": "asd",
-    "deliverables": "asd"
-  },
-  {
     "id": "1779113465102",
     "firmName": "Atlas Futures",
     "discount": "50% OFF Launch Promo",
@@ -187,24 +168,5 @@
     "commission": "15%",
     "retainer": "$5,000/mo",
     "deliverables": "Banner feature, newsletter blast, active discord ping"
-  },
-  {
-    "id": "1779114398427",
-    "firmName": "Atlas",
-    "discount": "50%",
-    "logo": "/yrmpfp.jpg",
-    "description": "Banner",
-    "expiresIn": 259200,
-    "claimedCount": 0,
-    "promoCode": "SNOW",
-    "link": "https://atlas.com",
-    "isHot": false,
-    "isFeatured": false,
-    "status": "Pending",
-    "contactEmail": "email@atlas.com",
-    "contactTelegram": "@atlas",
-    "commission": "15",
-    "retainer": "5000",
-    "deliverables": "Banner"
   }
 ]

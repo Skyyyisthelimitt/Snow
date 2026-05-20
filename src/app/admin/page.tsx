@@ -760,6 +760,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   const [giveaways, setGiveaways] = useState<any[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchDeals = async () => {
     try {
@@ -1032,7 +1033,49 @@ export default function AdminDashboard() {
           </div>
           <div style={{ display: 'flex', gap: 10 }}>
             <button
-              onClick={fetchDeals}
+              onClick={async () => {
+                setRefreshing(true);
+                await Promise.all([fetchDeals(), fetchGiveaways()]);
+                setRefreshing(false);
+              }}
+              style={{
+                background: 'transparent', border: '1px solid rgba(255,255,255,0.08)',
+                color: refreshing ? '#26B5FF' : '#8b9bb4', padding: '8px 16px', fontSize: 11, fontWeight: 700,
+                letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.2s',
+              }}
+              onMouseOver={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.2)'; (e.currentTarget as HTMLButtonElement).style.color = '#fff'; }}
+              onMouseOut={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.08)'; (e.currentTarget as HTMLButtonElement).style.color = refreshing ? '#26B5FF' : '#8b9bb4'; }}
+            >{refreshing ? '↻ Refreshing…' : '↻ Refresh'}</button>
+            <button
+              onClick={() => {
+                let rows: string[] = [];
+                let filename = '';
+                if (activeTab === 'deals') {
+                  filename = 'active-deals.csv';
+                  rows = ['Firm Name,Promo Code,Clicks,Status,Featured,Description',
+                    ...deals.filter(d => d.status === 'Active').map(d =>
+                      `"${d.firmName}","${d.promoCode}",${d.claimedCount || 0},"${d.status}","${d.isFeatured ? 'Yes' : 'No'}","${(d.description || '').replace(/"/g, '""')}"`)];
+                } else if (activeTab === 'giveaways') {
+                  filename = 'giveaways.csv';
+                  rows = ['Firm Name,Challenge Size,Tweet ID,Entries,Date Added,Status',
+                    ...giveaways.map(g =>
+                      `"${g.firmName}","${g.challengeSize}","${g.tweetId}",${g.entriesCount || 0},"${g.dateAdded}","${g.status}"`)];
+                } else if (activeTab === 'submissions') {
+                  filename = 'submissions.csv';
+                  rows = ['Firm Name,Discount,Commission,Retainer,Contact Telegram,Contact Email,Status',
+                    ...deals.filter(d => d.status === 'Pending' || d.status === 'Approved').map(d =>
+                      `"${d.firmName}","${d.discount}","${d.commission || ''}","${d.retainer || ''}","${d.contactTelegram || ''}","${d.contactEmail || ''}","${d.status}"`)];
+                } else {
+                  filename = 'overview.csv';
+                  rows = ['Firm Name,Promo Code,Clicks,Status',
+                    ...deals.map(d => `"${d.firmName}","${d.promoCode}",${d.claimedCount || 0},"${d.status}"`)];
+                }
+                const blob = new Blob([rows.join('\n')], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = filename; a.click();
+                URL.revokeObjectURL(url);
+              }}
               style={{
                 background: 'transparent', border: '1px solid rgba(255,255,255,0.08)',
                 color: '#8b9bb4', padding: '8px 16px', fontSize: 11, fontWeight: 700,
@@ -1040,12 +1083,7 @@ export default function AdminDashboard() {
               }}
               onMouseOver={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.2)'; (e.currentTarget as HTMLButtonElement).style.color = '#fff'; }}
               onMouseOut={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.08)'; (e.currentTarget as HTMLButtonElement).style.color = '#8b9bb4'; }}
-            >↻ Refresh</button>
-            <button style={{
-              background: 'transparent', border: '1px solid rgba(255,255,255,0.08)',
-              color: '#8b9bb4', padding: '8px 16px', fontSize: 11, fontWeight: 700,
-              letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer',
-            }}>Export</button>
+            >⬇ Export CSV</button>
           </div>
         </header>
 
