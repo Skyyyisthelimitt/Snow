@@ -2,33 +2,53 @@ import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 
-const trafficFilePath = path.join(process.cwd(), 'src/data/traffic.json');
-const dealsFilePath = path.join(process.cwd(), 'src/data/deals.json');
+const srcTrafficPath = path.join(process.cwd(), 'src/data/traffic.json');
+const tmpTrafficPath = '/tmp/traffic.json';
+const srcDealsPath = path.join(process.cwd(), 'src/data/deals.json');
+const tmpDealsPath = '/tmp/deals.json';
 
 async function readTraffic() {
   try {
-    const data = await fs.readFile(trafficFilePath, 'utf-8');
+    const data = await fs.readFile(tmpTrafficPath, 'utf-8');
     return JSON.parse(data);
   } catch {
-    return { visits: 0, clicks: 0 };
+    try {
+      const data = await fs.readFile(srcTrafficPath, 'utf-8');
+      const traffic = JSON.parse(data);
+      try { await fs.writeFile(tmpTrafficPath, JSON.stringify(traffic, null, 2), 'utf-8'); } catch {}
+      return traffic;
+    } catch {
+      return { visits: 0, clicks: 0 };
+    }
   }
 }
 
 async function writeTraffic(traffic: any) {
-  await fs.writeFile(trafficFilePath, JSON.stringify(traffic, null, 2), 'utf-8');
+  const json = JSON.stringify(traffic, null, 2);
+  await fs.writeFile(tmpTrafficPath, json, 'utf-8');
+  try { await fs.writeFile(srcTrafficPath, json, 'utf-8'); } catch {}
 }
 
 async function readDeals() {
   try {
-    const data = await fs.readFile(dealsFilePath, 'utf-8');
+    const data = await fs.readFile(tmpDealsPath, 'utf-8');
     return JSON.parse(data);
   } catch {
-    return [];
+    try {
+      const data = await fs.readFile(srcDealsPath, 'utf-8');
+      const deals = JSON.parse(data);
+      try { await fs.writeFile(tmpDealsPath, JSON.stringify(deals, null, 2), 'utf-8'); } catch {}
+      return deals;
+    } catch {
+      return [];
+    }
   }
 }
 
 async function writeDeals(deals: any[]) {
-  await fs.writeFile(dealsFilePath, JSON.stringify(deals, null, 2), 'utf-8');
+  const json = JSON.stringify(deals, null, 2);
+  await fs.writeFile(tmpDealsPath, json, 'utf-8');
+  try { await fs.writeFile(srcDealsPath, json, 'utf-8'); } catch {}
 }
 
 export async function GET(request: Request) {

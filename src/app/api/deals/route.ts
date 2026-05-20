@@ -2,19 +2,34 @@ import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 
-const filePath = path.join(process.cwd(), 'src/data/deals.json');
+const srcFilePath = path.join(process.cwd(), 'src/data/deals.json');
+const tmpFilePath = '/tmp/deals.json';
 
 async function readDeals() {
+  // Try /tmp first (writable copy), then fall back to bundled source
   try {
-    const data = await fs.readFile(filePath, 'utf-8');
+    const data = await fs.readFile(tmpFilePath, 'utf-8');
     return JSON.parse(data);
   } catch {
-    return [];
+    // /tmp doesn't exist yet — read from source and seed /tmp
+    try {
+      const data = await fs.readFile(srcFilePath, 'utf-8');
+      const deals = JSON.parse(data);
+      // Seed /tmp so future writes work
+      try { await fs.writeFile(tmpFilePath, JSON.stringify(deals, null, 2), 'utf-8'); } catch {}
+      return deals;
+    } catch {
+      return [];
+    }
   }
 }
 
 async function writeDeals(deals: any[]) {
-  await fs.writeFile(filePath, JSON.stringify(deals, null, 2), 'utf-8');
+  const json = JSON.stringify(deals, null, 2);
+  // Always write to /tmp (works on Vercel)
+  await fs.writeFile(tmpFilePath, json, 'utf-8');
+  // Also try to write to source (works locally for persistence)
+  try { await fs.writeFile(srcFilePath, json, 'utf-8'); } catch {}
 }
 
 export async function GET() {
@@ -39,7 +54,7 @@ export async function POST(request: Request) {
     if (body.action === 'approve') {
       const { id } = body;
       const updatedDeals = deals.map((d: any) => {
-        if (d.id === id) {
+        if (String(d.id) === String(id)) {
           return { ...d, status: 'Approved' };
         }
         return d;
@@ -50,7 +65,7 @@ export async function POST(request: Request) {
 
     if (body.action === 'delete') {
       const { id } = body;
-      const updatedDeals = deals.filter((d: any) => d.id !== id);
+      const updatedDeals = deals.filter((d: any) => String(d.id) !== String(id));
       await writeDeals(updatedDeals);
       return NextResponse.json({ success: true, message: 'Deal deleted successfully!' });
     }

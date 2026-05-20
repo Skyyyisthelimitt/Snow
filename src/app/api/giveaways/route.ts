@@ -2,19 +2,33 @@ import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 
-const filePath = path.join(process.cwd(), 'src/data/giveaways.json');
+const srcFilePath = path.join(process.cwd(), 'src/data/giveaways.json');
+const tmpFilePath = '/tmp/giveaways.json';
 
 async function readGiveaways() {
+  // Try /tmp first (writable copy), then fall back to bundled source
   try {
-    const data = await fs.readFile(filePath, 'utf-8');
+    const data = await fs.readFile(tmpFilePath, 'utf-8');
     return JSON.parse(data);
   } catch {
-    return [];
+    // /tmp doesn't exist yet — read from source and seed /tmp
+    try {
+      const data = await fs.readFile(srcFilePath, 'utf-8');
+      const giveaways = JSON.parse(data);
+      try { await fs.writeFile(tmpFilePath, JSON.stringify(giveaways, null, 2), 'utf-8'); } catch {}
+      return giveaways;
+    } catch {
+      return [];
+    }
   }
 }
 
 async function writeGiveaways(giveaways: any[]) {
-  await fs.writeFile(filePath, JSON.stringify(giveaways, null, 2), 'utf-8');
+  const json = JSON.stringify(giveaways, null, 2);
+  // Always write to /tmp (works on Vercel)
+  await fs.writeFile(tmpFilePath, json, 'utf-8');
+  // Also try to write to source (works locally for persistence)
+  try { await fs.writeFile(srcFilePath, json, 'utf-8'); } catch {}
 }
 
 export async function GET() {
@@ -35,7 +49,7 @@ export async function POST(request: Request) {
 
     if (body.action === 'delete') {
       const { id } = body;
-      const updatedGiveaways = giveaways.filter((g: any) => g.id !== id);
+      const updatedGiveaways = giveaways.filter((g: any) => String(g.id) !== String(id));
       await writeGiveaways(updatedGiveaways);
       return NextResponse.json({ success: true, message: 'Giveaway deleted successfully!' });
     }
