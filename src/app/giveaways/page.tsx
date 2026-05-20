@@ -9,17 +9,20 @@ import React, { useState, useEffect } from 'react';
 
 export default function GiveawaysPage() {
   const [giveaways, setGiveaways] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchGiveaways() {
       try {
         const response = await fetch('/api/giveaways');
         const data = await response.json();
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           setGiveaways(data.filter((g: any) => g.status === 'Active'));
         }
       } catch (error) {
         console.error('Failed to fetch giveaways:', error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchGiveaways();
@@ -86,8 +89,10 @@ export default function GiveawaysPage() {
         {/* Giveaway Cards Grid */}
         <div className="relative z-10 w-full px-6 md:px-12 pointer-events-auto animate-fade-in mb-32 flex justify-center">
           <div className="w-full max-w-7xl flex flex-wrap justify-start items-start gap-8">
-            {giveaways.length === 0 ? (
+            {loading ? (
               <div className="w-full text-center py-20 text-white/50 text-lg">Loading active giveaways...</div>
+            ) : giveaways.length === 0 ? (
+              <div className="w-full text-center py-20 text-white/50 text-lg">No active giveaways at the moment. Check back later!</div>
             ) : (
               giveaways.map((ga: any) => (
                 <div key={ga.id} className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-md">
