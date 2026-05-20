@@ -91,11 +91,20 @@ export default function BlueprintDealCard({
                 <div className="flex items-center gap-2">
                    <span className="text-accent font-mono font-bold text-xl uppercase">{promoCode}</span>
                    <button 
-                     onClick={(e) => {
+                     onClick={async (e) => {
                         e.stopPropagation();
                         navigator.clipboard.writeText(promoCode);
                         setCopied(true);
                         setTimeout(() => setCopied(false), 2000);
+                        try {
+                          await fetch('/api/track', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ type: 'COPY_CODE', firm: firmName, code: promoCode })
+                          });
+                        } catch (err) {
+                          console.error(err);
+                        }
                      }}
                      className="text-muted/50 hover:text-white transition-colors flex items-center"
                    >
@@ -113,6 +122,17 @@ export default function BlueprintDealCard({
           href={link}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={async () => {
+             try {
+               await fetch('/api/track', {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify({ type: 'CLAIM_DEAL', firm: firmName, code: promoCode })
+               });
+             } catch (err) {
+               console.error(err);
+             }
+          }}
           className="group/btn relative w-full h-10 bg-black border border-accent/30 hover:border-accent rounded-sm flex items-center justify-center overflow-hidden transition-all duration-300"
         >
           {/* Animated Background Slide */}

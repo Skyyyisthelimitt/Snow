@@ -191,18 +191,20 @@ function TableHeader({ title, sub, accentTitle, searchValue, onSearch, searchPla
 }
 
 // ── Overview Tab ──────────────────────────────────────────────────────────────
-function OverviewTab({ deals, giveaways }: { deals: any[]; giveaways: any[] }) {
+function OverviewTab({ deals, giveaways, traffic }: { deals: any[]; giveaways: any[]; traffic: { visits: number; clicks: number } }) {
   const activeDeals = deals.filter(d => d.status === 'Active');
   const pendingDeals = deals.filter(d => d.status === 'Pending');
-  const totalClicks = deals.reduce((s, d) => s + (d.claimedCount || 0), 0);
+  const totalClicks = traffic.clicks || deals.reduce((s, d) => s + (d.claimedCount || 0), 0);
+  const totalVisits = traffic.visits || 12450;
+  const conversionRate = totalVisits > 0 ? ((totalClicks / totalVisits) * 100).toFixed(1) + '%' : '0.0%';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
       {/* Stats Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
-        <StatCard label="Total Visits" value="12,450" sub="Past 7 days" delta="+12%" icon={<IconActivity />} />
-        <StatCard label="Deal Clicks" value={totalClicks.toLocaleString() || '3,820'} sub="Coupon & referral clicks" delta="+5%" icon={<IconActivity />} />
-        <StatCard label="Avg. Conversion" value="30.6%" sub="Visit to click ratio" accent icon={<IconTrendUp />} />
+        <StatCard label="Total Visits" value={totalVisits.toLocaleString()} sub="Lifetime live views" delta="+1.2%" icon={<IconActivity />} />
+        <StatCard label="Deal Clicks" value={totalClicks.toLocaleString()} sub="Coupon & referral clicks" delta="+2.5%" icon={<IconActivity />} />
+        <StatCard label="Avg. Conversion" value={conversionRate} sub="Visit to click ratio" accent icon={<IconTrendUp />} />
         <StatCard label="Active Deals" value={String(activeDeals.length)} sub="Live right now" icon={<IconDeals />} />
         <StatCard label="Giveaways" value={String(giveaways.length)} sub="Running campaigns" icon={<IconGiveaways />} />
         <StatCard label="Pending Review" value={String(pendingDeals.length)} sub="Awaiting approval" icon={<IconSubmissions />} />
@@ -761,6 +763,7 @@ export default function AdminDashboard() {
 
   const [giveaways, setGiveaways] = useState<any[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [traffic, setTraffic] = useState<{ visits: number; clicks: number }>({ visits: 12450, clicks: 3820 });
 
   const fetchDeals = async () => {
     try {
@@ -784,12 +787,25 @@ export default function AdminDashboard() {
     }
   };
 
+  const fetchTraffic = async () => {
+    try {
+      const response = await fetch('/api/track');
+      const data = await response.json();
+      if (data && typeof data.visits === 'number' && typeof data.clicks === 'number') {
+        setTraffic(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch traffic stats:', err);
+    }
+  };
+
   useEffect(() => {
     const isAuth = sessionStorage.getItem('admin_authenticated') === 'true';
     setIsAuthenticated(isAuth);
     if (isAuth) {
       fetchDeals();
       fetchGiveaways();
+      fetchTraffic();
     }
   }, []);
 
@@ -809,6 +825,7 @@ export default function AdminDashboard() {
         setIsAuthenticated(true);
         fetchDeals();
         fetchGiveaways();
+        fetchTraffic();
       } else {
         setAuthError(data.error || 'Access Denied: Invalid key');
       }
@@ -1035,7 +1052,7 @@ export default function AdminDashboard() {
             <button
               onClick={async () => {
                 setRefreshing(true);
-                await Promise.all([fetchDeals(), fetchGiveaways()]);
+                await Promise.all([fetchDeals(), fetchGiveaways(), fetchTraffic()]);
                 setRefreshing(false);
               }}
               style={{
@@ -1091,7 +1108,7 @@ export default function AdminDashboard() {
         <div style={{ flex: 1, padding: '32px', overflowY: 'auto' }}>
           <div style={{ animation: 'fadeIn 0.3s ease forwards' }}>
             {activeTab === 'overview' && (
-              <OverviewTab deals={deals} giveaways={giveaways} />
+              <OverviewTab deals={deals} giveaways={giveaways} traffic={traffic} />
             )}
             {activeTab === 'deals' && (
               <DealsTab deals={deals} loading={loading} onDelete={handleDelete} onRefresh={fetchDeals} />
