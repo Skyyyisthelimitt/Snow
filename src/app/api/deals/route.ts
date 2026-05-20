@@ -1,38 +1,7 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
+import { readDeals, writeDeals } from '@/lib/storage';
 
 export const dynamic = 'force-dynamic';
-
-const srcFilePath = path.join(process.cwd(), 'src/data/deals.json');
-const tmpFilePath = '/tmp/deals.json';
-
-async function readDeals() {
-  // Try /tmp first (writable copy), then fall back to bundled source
-  try {
-    const data = await fs.readFile(tmpFilePath, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    // /tmp doesn't exist yet — read from source and seed /tmp
-    try {
-      const data = await fs.readFile(srcFilePath, 'utf-8');
-      const deals = JSON.parse(data);
-      // Seed /tmp so future writes work
-      try { await fs.writeFile(tmpFilePath, JSON.stringify(deals, null, 2), 'utf-8'); } catch {}
-      return deals;
-    } catch {
-      return [];
-    }
-  }
-}
-
-async function writeDeals(deals: any[]) {
-  const json = JSON.stringify(deals, null, 2);
-  // Always write to /tmp (works on Vercel)
-  await fs.writeFile(tmpFilePath, json, 'utf-8');
-  // Also try to write to source (works locally for persistence)
-  try { await fs.writeFile(srcFilePath, json, 'utf-8'); } catch {}
-}
 
 export async function GET() {
   const deals = await readDeals();
