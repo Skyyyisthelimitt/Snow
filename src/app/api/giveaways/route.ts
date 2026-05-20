@@ -24,6 +24,12 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const correctPassword = process.env.ADMIN_PASSWORD || 'skyadmin123';
+    const clientKey = request.headers.get('x-admin-key');
+    if (clientKey !== correctPassword) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await request.json();
     const giveaways = await readGiveaways();
 
@@ -44,7 +50,6 @@ export async function POST(request: Request) {
         entriesCount: 0,
         dateAdded: new Date().toISOString().split('T')[0],
       };
-      // Put new giveaways at the front
       giveaways.unshift(newGiveaway);
       await writeGiveaways(giveaways);
       return NextResponse.json({ success: true, giveaway: newGiveaway });

@@ -10,7 +10,7 @@ function Portal({ children }: { children: React.ReactNode }) {
   return mounted ? createPortal(children, document.body) : null;
 }
 
-// ── Icons ─────────────────────────────────────────────────────────────────────
+// Icons
 const IconOverview = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
@@ -74,10 +74,10 @@ const IconLink = () => (
   </svg>
 );
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// Types
 type Tab = 'overview' | 'deals' | 'giveaways' | 'submissions';
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// Helpers
 function SearchInput({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder: string }) {
   return (
     <div style={{ position: 'relative', flex: 1 }}>
@@ -120,7 +120,7 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-// ── Stat Card ─────────────────────────────────────────────────────────────────
+// Stat Card
 function StatCard({ label, value, sub, accent, delta, icon }: { label: string; value: string; sub: string; accent?: boolean; delta?: string; icon: React.ReactNode }) {
   return (
     <div style={{
@@ -149,7 +149,7 @@ function StatCard({ label, value, sub, accent, delta, icon }: { label: string; v
   );
 }
 
-// ── Mini table shared header ──────────────────────────────────────────────────
+// Mini table shared header
 function TableHeader({ title, sub, accentTitle, searchValue, onSearch, searchPlaceholder, actionLabel, onAction }: {
   title: string; sub: string; accentTitle?: boolean;
   searchValue: string; onSearch: (v: string) => void; searchPlaceholder: string;
@@ -190,7 +190,7 @@ function TableHeader({ title, sub, accentTitle, searchValue, onSearch, searchPla
   );
 }
 
-// ── Overview Tab ──────────────────────────────────────────────────────────────
+// Overview Tab
 function OverviewTab({ deals, giveaways, traffic }: { deals: any[]; giveaways: any[]; traffic: { visits: number; clicks: number } }) {
   const activeDeals = deals.filter(d => d.status === 'Active');
   const pendingDeals = deals.filter(d => d.status === 'Pending');
@@ -376,7 +376,7 @@ function DealModal({ initialData, onClose, onSave }: { initialData?: any, onClos
   );
 }
 
-// ── Deals Tab ─────────────────────────────────────────────────────────────────
+// Deals Tab
 function DealsTab({ deals, loading, onDelete, onRefresh }: { deals: any[]; loading: boolean; onDelete: (id: string) => void; onRefresh: () => void }) {
   const [search, setSearch] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
@@ -464,7 +464,10 @@ function DealsTab({ deals, loading, onDelete, onRefresh }: { deals: any[]; loadi
               const action = editingDeal ? 'admin_update' : 'admin_create';
               await fetch('/api/deals', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                  'Content-Type': 'application/json',
+                  'x-admin-key': sessionStorage.getItem('admin_key') || ''
+                },
                 body: JSON.stringify({ action, deal })
               });
               onRefresh();
@@ -549,7 +552,7 @@ function GiveawayModal({ initialData, onClose, onSave }: { initialData?: any, on
   );
 }
 
-// ── Giveaways Tab ─────────────────────────────────────────────────────────────
+// Giveaways Tab
 function GiveawaysTab({ giveaways, onSave, onDelete }: { giveaways: any[]; onSave: (ga: any) => void; onDelete: (id: string) => void }) {
   const [search, setSearch] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
@@ -649,7 +652,7 @@ function GiveawaysTab({ giveaways, onSave, onDelete }: { giveaways: any[]; onSav
 
 
 
-// ── Submissions Tab ───────────────────────────────────────────────────────────
+// Submissions Tab
 function SubmissionsTab({ pending, loading, onApprove, onDelete }: { pending: any[]; loading: boolean; onApprove: (id: string) => void; onDelete: (id: string) => void }) {
   const [search, setSearch] = useState('');
   const filtered = pending.filter(d =>
@@ -750,7 +753,7 @@ function SubmissionsTab({ pending, loading, onApprove, onDelete }: { pending: an
   );
 }
 
-// ── Main Dashboard ────────────────────────────────────────────────────────────
+// Main Dashboard
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [password, setPassword] = useState('');
@@ -789,7 +792,9 @@ export default function AdminDashboard() {
 
   const fetchTraffic = async () => {
     try {
-      const response = await fetch('/api/track');
+      const response = await fetch('/api/track', {
+        headers: { 'x-admin-key': sessionStorage.getItem('admin_key') || '' }
+      });
       const data = await response.json();
       if (data && typeof data.visits === 'number' && typeof data.clicks === 'number') {
         setTraffic(data);
@@ -822,6 +827,7 @@ export default function AdminDashboard() {
       const data = await res.json();
       if (res.ok && data.success) {
         sessionStorage.setItem('admin_authenticated', 'true');
+        sessionStorage.setItem('admin_key', password);
         setIsAuthenticated(true);
         fetchDeals();
         fetchGiveaways();
@@ -838,12 +844,20 @@ export default function AdminDashboard() {
 
   const handleLogout = () => {
     sessionStorage.removeItem('admin_authenticated');
+    sessionStorage.removeItem('admin_key');
     setIsAuthenticated(false);
   };
 
   const handleApprove = async (id: string) => {
     try {
-      const res = await fetch('/api/deals', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'approve', id }) });
+      const res = await fetch('/api/deals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-key': sessionStorage.getItem('admin_key') || ''
+        },
+        body: JSON.stringify({ action: 'approve', id })
+      });
       const result = await res.json();
       if (result.success) fetchDeals();
     } catch (err) { console.error(err); }
@@ -851,7 +865,14 @@ export default function AdminDashboard() {
 
   const handleDelete = async (id: string) => {
     try {
-      const res = await fetch('/api/deals', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', id }) });
+      const res = await fetch('/api/deals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-key': sessionStorage.getItem('admin_key') || ''
+        },
+        body: JSON.stringify({ action: 'delete', id })
+      });
       const result = await res.json();
       if (result.success) fetchDeals();
     } catch (err) { console.error(err); }
@@ -859,7 +880,14 @@ export default function AdminDashboard() {
 
   const handleDeleteGiveaway = async (id: string) => {
     try {
-      const res = await fetch('/api/giveaways', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', id }) });
+      const res = await fetch('/api/giveaways', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-key': sessionStorage.getItem('admin_key') || ''
+        },
+        body: JSON.stringify({ action: 'delete', id })
+      });
       const result = await res.json();
       if (result.success) fetchGiveaways();
     } catch (err) { console.error(err); }
@@ -870,7 +898,10 @@ export default function AdminDashboard() {
       const action = ga.id ? 'admin_update' : 'admin_create';
       const res = await fetch('/api/giveaways', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-key': sessionStorage.getItem('admin_key') || ''
+        },
         body: JSON.stringify({ action, giveaway: ga })
       });
       const result = await res.json();
@@ -878,7 +909,7 @@ export default function AdminDashboard() {
     } catch (err) { console.error(err); }
   };
 
-  // ── Splash ──
+  // Splash
   if (isAuthenticated === null) {
     return (
       <div style={{ minHeight: '100vh', background: '#050a12', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -887,7 +918,7 @@ export default function AdminDashboard() {
     );
   }
 
-  // ── Login ──
+  // Login
   if (!isAuthenticated) {
     return (
       <main style={{ minHeight: '100vh', background: '#050a12', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
@@ -942,7 +973,7 @@ export default function AdminDashboard() {
     );
   }
 
-  // ── Nav config ──
+  // Nav config
   const navItems: { id: Tab; label: string; icon: React.ReactNode; badge?: number }[] = [
     { id: 'overview', label: 'Overview', icon: <IconOverview /> },
     { id: 'deals', label: 'Active Deals', icon: <IconDeals />, badge: deals.filter(d => d.status === 'Active').length },
@@ -960,7 +991,7 @@ export default function AdminDashboard() {
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#070b14', color: '#fff' }}>
 
-      {/* ── Sidebar ── */}
+      {/* Sidebar */}
       <aside style={{
         width: 240, minHeight: '100vh', background: '#080d18',
         borderRight: '1px solid rgba(255,255,255,0.05)',
@@ -1033,7 +1064,7 @@ export default function AdminDashboard() {
         </div>
       </aside>
 
-      {/* ── Main ── */}
+      {/* Main */}
       <main style={{ flex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         {/* Topbar */}
         <header style={{

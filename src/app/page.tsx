@@ -160,8 +160,6 @@ export default function Home() {
       {/* Active Deals Section */}
       <section id="deals" className="w-full flex justify-center px-4 md:px-8 pb-40 relative z-10">
         <div className="w-full max-w-[1200px] flex flex-col items-center">
-          
-          {/* LESSENED SPACING ABOVE HEADER */}
           <div className="h-15 w-full" aria-hidden="true"></div>
 
           <div className="flex flex-col items-center text-center gap-4 mb-32 relative w-full">
@@ -178,7 +176,6 @@ export default function Home() {
               </div>
           </div>
           
-          {/* PHYSICAL SPACER BELOW DISCOUNTS LINE */}
           <div className="h-7 w-full" aria-hidden="true"></div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start relative w-full">
@@ -218,10 +215,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* LESSENED SPACING TO PREVENT OVERLAP */}
       <div className="h-20 w-full" aria-hidden="true"></div>
 
-      {/* SECTION 03: PROTOCOL GUIDE */}
       <section className="relative py-20 bg-transparent flex flex-col items-center">
         <div className="max-w-[1300px] w-full mx-auto px-6 flex flex-col items-center">
           <div className="flex flex-col items-center text-center w-full">
@@ -238,7 +233,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* PHYSICAL SPACING BELOW HEADER */}
           <div className="h-10 w-full" aria-hidden="true"></div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full max-w-[1300px]">
@@ -268,10 +262,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* REFINED SPACING ABOVE FAQ */}
       <div className="h-20 w-full" aria-hidden="true"></div>
 
-      {/* SECTION 04: FAQ SECTION (Two-Column Cards) */}
       <section id="faq" className="relative py-40 pb-80 bg-transparent flex flex-col items-center overflow-hidden">
         <div className="max-w-[1200px] w-full mx-auto px-6 flex flex-col items-center">
           

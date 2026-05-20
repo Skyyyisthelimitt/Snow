@@ -10,7 +10,7 @@ async function readTraffic() {
     const data = await fs.readFile(trafficFilePath, 'utf-8');
     return JSON.parse(data);
   } catch {
-    return { visits: 12450, clicks: 3820 };
+    return { visits: 0, clicks: 0 };
   }
 }
 
@@ -31,20 +31,24 @@ async function writeDeals(deals: any[]) {
   await fs.writeFile(dealsFilePath, JSON.stringify(deals, null, 2), 'utf-8');
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const correctPassword = process.env.ADMIN_PASSWORD || 'skyadmin123';
+    const clientKey = request.headers.get('x-admin-key');
+    if (clientKey !== correctPassword) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
     const traffic = await readTraffic();
     return NextResponse.json(traffic);
   } catch {
-    return NextResponse.json({ visits: 12450, clicks: 3820 });
+    return NextResponse.json({ visits: 0, clicks: 0 });
   }
 }
 
 export async function POST(request: Request) {
   try {
     const { firm, type, code } = await request.json();
-    
-    // Read and update general traffic stats
     const traffic = await readTraffic();
     
     if (type === 'PAGE_VISIT') {
@@ -52,7 +56,6 @@ export async function POST(request: Request) {
     } else if (type === 'CLAIM_DEAL' || type === 'COPY_CODE') {
       traffic.clicks = (traffic.clicks || 0) + 1;
       
-      // Also update the specific deal's claimed count in deals.json if firm matches
       if (firm && firm !== 'N/A') {
         const deals = await readDeals();
         const updatedDeals = deals.map((d: any) => {
@@ -66,8 +69,6 @@ export async function POST(request: Request) {
     }
     
     await writeTraffic(traffic);
-    
-    console.log(`[TRAFFIC] ${new Date().toISOString()} | ${type} | Firm: ${firm} | Code: ${code}`);
     
     return NextResponse.json({ success: true, traffic });
   } catch (error) {

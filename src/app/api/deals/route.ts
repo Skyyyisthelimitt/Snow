@@ -27,6 +27,15 @@ export async function POST(request: Request) {
     const body = await request.json();
     const deals = await readDeals();
 
+    const adminActions = ['approve', 'delete', 'admin_create', 'admin_update'];
+    if (body.action && adminActions.includes(body.action)) {
+      const correctPassword = process.env.ADMIN_PASSWORD || 'skyadmin123';
+      const clientKey = request.headers.get('x-admin-key');
+      if (clientKey !== correctPassword) {
+        return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      }
+    }
+
     if (body.action === 'approve') {
       const { id } = body;
       const updatedDeals = deals.map((d: any) => {
@@ -88,23 +97,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true, message: 'Deal updated successfully!' });
     }
 
-    // New deal submission
     const newDeal = {
       id: String(Date.now()),
       firmName: body.firmName || 'Unnamed Prop Firm',
       discount: body.discount || 'Special Discount',
-      logo: '/yrmpfp.jpg', // Default logo placeholder
+      logo: '/yrmpfp.jpg',
       description: body.deliverables || 'Exclusive B2B partnership deal.',
-      expiresIn: 259200, // Default 3 days
+      expiresIn: 259200,
       claimedCount: 0,
-      promoCode: 'SNOW', // Branded custom code automatically allocated
+      promoCode: 'SNOW',
       link: body.link || 'https://snowpropdeals.com',
       isHot: false,
       isFeatured: false,
       status: 'Pending',
       contactEmail: body.contactEmail || '',
       contactTelegram: body.contactTelegram || '',
-      // B2B Specific proposal terms
       commission: body.commission || 'N/A',
       retainer: body.retainer || 'N/A',
       deliverables: body.deliverables || ''

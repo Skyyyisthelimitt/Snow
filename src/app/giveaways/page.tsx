@@ -68,17 +68,6 @@ export default function GiveawaysPage() {
         {/* Overlay gradient for depth */}
         <div className="absolute inset-0 bg-gradient-to-b from-background/0 via-background/20 to-background z-0 pointer-events-none"></div>
 
-        {/* Main Content Wrapper */}
-        {/* 
-          POSITIONING GUIDE (VERTICAL SPACING):
-          To move the text and cards further DOWN the page, change "mt-28" below to a higher number.
-          "mt-16" -> Closer to the top navbar
-          "mt-28" -> Default positioning
-          "mt-40" -> Pushed down further
-          "mt-56" -> Much further down
-          
-          To change the space BETWEEN the text and the cards, change "mb-12" below.
-        */}
         <div className="relative z-10 flex flex-col items-center text-center px-4 animate-fade-in w-full max-w-5xl pointer-events-none" style={{ marginBottom: '40px' }}>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4 tracking-tighter leading-tight text-center w-full">
             Active <span className="text-accent glow-text">Giveaways</span>
