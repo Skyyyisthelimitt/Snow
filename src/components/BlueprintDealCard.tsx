@@ -80,7 +80,9 @@ export default function BlueprintDealCard({
              <span className="text-white font-black text-lg tracking-tight uppercase">{firmName}</span>
           </div>
 
-          <h2 className="text-[32px] font-black text-white tracking-tight group-hover:text-accent transition-colors leading-none">{discount} OFF</h2>
+          <h2 className="text-[32px] font-black text-white tracking-tight group-hover:text-accent transition-colors leading-none">
+            {discount.toUpperCase().includes('OFF') ? discount : `${discount} OFF`}
+          </h2>
           
           {/* Absolutely Positioned Code Box (Forced to bottom) - Perfectly Balanced Centering */}
           <div className="absolute bottom-4 min-w-[140px] h-7 flex items-center justify-center bg-accent/5 border border-dashed border-accent/30 rounded group-hover:border-accent/60 transition-all">

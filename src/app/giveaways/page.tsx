@@ -5,11 +5,25 @@ import Navbar from '@/components/Navbar';
 import PixelBlast from '@/components/PixelBlast';
 import Footer from '@/components/Footer';
 import GiveawayCard from '@/components/GiveawayCard';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function GiveawaysPage() {
+  const [giveaways, setGiveaways] = useState<any[]>([]);
 
-  return (
+  useEffect(() => {
+    async function fetchGiveaways() {
+      try {
+        const response = await fetch('/api/giveaways');
+        const data = await response.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setGiveaways(data.filter((g: any) => g.status === 'Active'));
+        }
+      } catch (error) {
+        console.error('Failed to fetch giveaways:', error);
+      }
+    }
+    fetchGiveaways();
+  }, []);  return (
     <main className="min-h-screen bg-background relative overflow-y-auto overflow-x-hidden flex flex-col">
       <Navbar />
       
@@ -71,16 +85,16 @@ export default function GiveawaysPage() {
 
         {/* Giveaway Cards Grid */}
         <div className="relative z-10 w-full px-6 md:px-12 pointer-events-auto animate-fade-in mb-32 flex justify-center">
-          <div className="w-full max-w-7xl flex flex-wrap justify-center items-start gap-8">
-            <div className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-md">
-              <GiveawayCard tweetId="2052482529547161918" />
-            </div>
-            <div className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-md">
-              <GiveawayCard tweetId="2054292113819582864" />
-            </div>
-            <div className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-md">
-              <GiveawayCard tweetId="2051719268476354695" />
-            </div>
+          <div className="w-full max-w-7xl flex flex-wrap justify-start items-start gap-8">
+            {giveaways.length === 0 ? (
+              <div className="w-full text-center py-20 text-white/50 text-lg">Loading active giveaways...</div>
+            ) : (
+              giveaways.map((ga: any) => (
+                <div key={ga.id} className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-md">
+                  <GiveawayCard tweetId={ga.tweetId} />
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

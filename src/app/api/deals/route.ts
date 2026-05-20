@@ -31,7 +31,7 @@ export async function POST(request: Request) {
       const { id } = body;
       const updatedDeals = deals.map((d: any) => {
         if (d.id === id) {
-          return { ...d, status: 'Active' };
+          return { ...d, status: 'Approved' };
         }
         return d;
       });
@@ -44,6 +44,48 @@ export async function POST(request: Request) {
       const updatedDeals = deals.filter((d: any) => d.id !== id);
       await writeDeals(updatedDeals);
       return NextResponse.json({ success: true, message: 'Deal deleted successfully!' });
+    }
+
+    if (body.action === 'admin_create') {
+      const newDeal = {
+        id: String(Date.now()),
+        firmName: body.deal.firmName || 'Unnamed Prop Firm',
+        discount: body.deal.discount || '',
+        logo: body.deal.logo || '/yrmpfp.jpg',
+        description: body.deal.description || '',
+        expiresIn: 259200,
+        claimedCount: 0,
+        promoCode: body.deal.promoCode || 'SNOW',
+        link: body.deal.link || '',
+        isHot: false,
+        isFeatured: body.deal.isFeatured || false,
+        status: body.deal.status || 'Active',
+      };
+      deals.push(newDeal);
+      await writeDeals(deals);
+      return NextResponse.json({ success: true, deal: newDeal });
+    }
+
+    if (body.action === 'admin_update') {
+      const { id } = body.deal;
+      const updatedDeals = deals.map((d: any) => {
+        if (d.id === id) {
+          return {
+            ...d,
+            firmName: body.deal.firmName,
+            discount: body.deal.discount,
+            logo: body.deal.logo,
+            description: body.deal.description,
+            promoCode: body.deal.promoCode,
+            link: body.deal.link,
+            isFeatured: body.deal.isFeatured,
+            status: body.deal.status,
+          };
+        }
+        return d;
+      });
+      await writeDeals(updatedDeals);
+      return NextResponse.json({ success: true, message: 'Deal updated successfully!' });
     }
 
     // New deal submission
