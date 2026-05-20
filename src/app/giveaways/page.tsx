@@ -15,7 +15,7 @@ export default function GiveawaysPage() {
   useEffect(() => {
     async function fetchGiveaways() {
       try {
-        const response = await fetch('/api/giveaways');
+        const response = await fetch('/api/giveaways', { cache: 'no-store' });
         const data = await response.json();
         if (Array.isArray(data)) {
           setGiveaways(data.filter((g: any) => g.status === 'Active'));

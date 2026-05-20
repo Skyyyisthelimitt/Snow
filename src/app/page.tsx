@@ -32,7 +32,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchDeals() {
       try {
-        const response = await fetch('/api/deals');
+        const response = await fetch('/api/deals', { cache: 'no-store' });
         const data = await response.json();
         if (Array.isArray(data)) {
           setDeals(data);

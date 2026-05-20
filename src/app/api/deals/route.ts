@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 
+export const dynamic = 'force-dynamic';
+
 const srcFilePath = path.join(process.cwd(), 'src/data/deals.json');
 const tmpFilePath = '/tmp/deals.json';
 
