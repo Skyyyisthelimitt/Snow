@@ -84,10 +84,10 @@ export default function Footer() {
               <div className="flex flex-col gap-6">
                 <h4 className="text-white font-bold text-base">Explore</h4>
                 <ul className="flex flex-col gap-5 text-white/40 text-[15px]">
-                  <li><a href="#" className="hover:text-white transition-colors">Home</a></li>
-                  <li><a href="#deals" className="hover:text-white transition-colors">Prop Deals</a></li>
-                  <li><a href="#deals" className="hover:text-white transition-colors">Discount Codes</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Reviews</a></li>
+                  <li><a href="/" className="hover:text-white transition-colors">Home</a></li>
+                  <li><a href="/#deals" className="hover:text-white transition-colors">Prop Deals</a></li>
+                  <li><a href="/#deals" className="hover:text-white transition-colors">Discount Codes</a></li>
+                  <li><a href="/" className="hover:text-white transition-colors">Reviews</a></li>
                 </ul>
               </div>
 
@@ -95,10 +95,10 @@ export default function Footer() {
               <div className="flex flex-col gap-6">
                 <h4 className="text-white font-bold text-base">Resources</h4>
                 <ul className="flex flex-col gap-5 text-white/40 text-[15px]">
-                  <li><a href="#" className="hover:text-white transition-colors">How it works</a></li>
-                  <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Guides</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Submit a Review</a></li>
+                  <li><a href="/" className="hover:text-white transition-colors">How it works</a></li>
+                  <li><a href="/#faq" className="hover:text-white transition-colors">FAQ</a></li>
+                  <li><a href="/" className="hover:text-white transition-colors">Guides</a></li>
+                  <li><a href="/" className="hover:text-white transition-colors">Submit a Review</a></li>
                 </ul>
               </div>
 
@@ -106,9 +106,9 @@ export default function Footer() {
               <div className="flex flex-col gap-6">
                 <h4 className="text-white font-bold text-base">Partners</h4>
                 <ul className="flex flex-col gap-5 text-white/40 text-[15px]">
-                  <li><a href="#" className="hover:text-white transition-colors">Become a partner</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Prop Firm Login</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">API Integration</a></li>
+                  <li><a href="/" className="hover:text-white transition-colors">Become a partner</a></li>
+                  <li><a href="/" className="hover:text-white transition-colors">Prop Firm Login</a></li>
+                  <li><a href="/" className="hover:text-white transition-colors">API Integration</a></li>
                 </ul>
               </div>
 
@@ -116,7 +116,7 @@ export default function Footer() {
               <div className="flex flex-col gap-6">
                 <h4 className="text-white font-bold text-base">Company</h4>
                 <ul className="flex flex-col gap-5 text-white/40 text-[15px]">
-                  <li><a href="#" className="hover:text-white transition-colors">About SnowPropDeals</a></li>
+                  <li><a href="/" className="hover:text-white transition-colors">About SnowPropDeals</a></li>
                   <li><a href="mailto:Tradersnow@icloud.com" className="hover:text-white transition-colors">Contact Us</a></li>
                   <li><a href="https://discord.gg/QHWsCk4SPe" className="hover:text-white transition-colors">Discord Community</a></li>
                 </ul>
