@@ -204,7 +204,7 @@ export default function SubmitDealPage() {
                       <input
                         type="url"
                         required
-                        placeholder="e.g. https://atlasfutures.com"
+                        placeholder="e.g. https://example.com"
                         value={formData.link}
                         onChange={(e) => setFormData({ ...formData, link: e.target.value })}
                         className="h-10 w-full rounded-md border border-[#B3D4FF]/10 bg-[#0D1117] text-sm text-white placeholder-[#8B9BB4]/30 focus:border-[#26B5FF] focus:ring-1 focus:ring-[#26B5FF] outline-none transition-all duration-200"
