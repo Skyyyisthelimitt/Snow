@@ -248,7 +248,7 @@ function OverviewTab({ deals, giveaways, traffic }: { deals: any[]; giveaways: a
 }
 
 function DealModal({ initialData, onClose, onSave }: { initialData?: any, onClose: () => void, onSave: (deal: any) => void }) {
-  const [formData, setFormData] = useState(initialData || {
+  const [formData, setFormData] = useState(() => ({
     firmName: 'New Firm',
     promoCode: 'CODE50',
     discount: '50%',
@@ -257,7 +257,8 @@ function DealModal({ initialData, onClose, onSave }: { initialData?: any, onClos
     description: 'A brand new exclusive offer.',
     status: 'Active',
     isFeatured: false,
-  });
+    ...initialData
+  }));
 
   const handleChange = (field: string, val: any) => setFormData((p: any) => ({ ...p, [field]: val }));
 
@@ -377,15 +378,15 @@ function DealModal({ initialData, onClose, onSave }: { initialData?: any, onClos
 }
 
 // Deals Tab
-function DealsTab({ deals, loading, onDelete, onRefresh }: { deals: any[]; loading: boolean; onDelete: (id: string) => void; onRefresh: () => void }) {
+function DealsTab({ deals, loading, onDelete, onSave }: { deals: any[]; loading: boolean; onDelete: (id: string) => void; onSave: (deal: any, isEdit: boolean) => Promise<boolean> }) {
   const [search, setSearch] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingDeal, setEditingDeal] = useState<any>(null);
 
   const activeDeals = deals.filter(d => d.status === 'Active');
   const filtered = activeDeals.filter(d =>
-    d.firmName.toLowerCase().includes(search.toLowerCase()) ||
-    d.promoCode.toLowerCase().includes(search.toLowerCase())
+    (d.firmName || '').toLowerCase().includes(search.toLowerCase()) ||
+    (d.promoCode || '').toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -457,24 +458,14 @@ function DealsTab({ deals, loading, onDelete, onRefresh }: { deals: any[]; loadi
 
       {(showAddModal || editingDeal) && (
         <DealModal 
+          key={editingDeal ? editingDeal.id : 'new'}
           initialData={editingDeal}
           onClose={() => { setShowAddModal(false); setEditingDeal(null); }}
           onSave={async (deal) => {
-            try {
-              const action = editingDeal ? 'admin_update' : 'admin_create';
-              await fetch('/api/deals', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'x-admin-key': sessionStorage.getItem('admin_key') || ''
-                },
-                body: JSON.stringify({ action, deal })
-              });
-              onRefresh();
+            const success = await onSave(deal, !!editingDeal);
+            if (success) {
               setShowAddModal(false);
               setEditingDeal(null);
-            } catch (error) {
-              console.error('Failed to save deal:', error);
             }
           }}
         />
@@ -484,12 +475,13 @@ function DealsTab({ deals, loading, onDelete, onRefresh }: { deals: any[]; loadi
 }
 
 function GiveawayModal({ initialData, onClose, onSave }: { initialData?: any, onClose: () => void, onSave: (ga: any) => void }) {
-  const [formData, setFormData] = useState(initialData || {
+  const [formData, setFormData] = useState(() => ({
     firmName: 'New Firm',
     challengeSize: '$50K Challenge',
     tweetId: '1234567890123456789',
     status: 'Active',
-  });
+    ...initialData
+  }));
 
   const handleChange = (field: string, val: any) => setFormData((p: any) => ({ ...p, [field]: val }));
 
@@ -553,14 +545,14 @@ function GiveawayModal({ initialData, onClose, onSave }: { initialData?: any, on
 }
 
 // Giveaways Tab
-function GiveawaysTab({ giveaways, onSave, onDelete }: { giveaways: any[]; onSave: (ga: any) => void; onDelete: (id: string) => void }) {
+function GiveawaysTab({ giveaways, onSave, onDelete }: { giveaways: any[]; onSave: (ga: any) => Promise<boolean>; onDelete: (id: string) => void }) {
   const [search, setSearch] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingGiveaway, setEditingGiveaway] = useState<any>(null);
   const filtered = giveaways.filter(g =>
-    g.firmName.toLowerCase().includes(search.toLowerCase()) ||
-    g.challengeSize.toLowerCase().includes(search.toLowerCase()) ||
-    g.tweetId.includes(search)
+    (g.firmName || '').toLowerCase().includes(search.toLowerCase()) ||
+    (g.challengeSize || '').toLowerCase().includes(search.toLowerCase()) ||
+    (g.tweetId || '').includes(search)
   );
 
   return (
@@ -594,7 +586,7 @@ function GiveawaysTab({ giveaways, onSave, onDelete }: { giveaways: any[]; onSav
                   <td style={{ padding: '16px 24px' }}>
                     <a href={`https://x.com/status/${ga.tweetId}`} target="_blank" rel="noopener noreferrer"
                       style={{ fontFamily: 'monospace', fontSize: 14, color: '#26B5FF', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                      {ga.tweetId.slice(0, 10)}… <IconLink />
+                      {(ga.tweetId || '').slice(0, 10)}… <IconLink />
                     </a>
                   </td>
                   <td style={{ padding: '16px 24px', fontFamily: 'monospace', color: 'rgba(255,255,255,0.8)', fontSize: 15 }}>{(ga.entriesCount || 0).toLocaleString()}</td>
@@ -637,12 +629,15 @@ function GiveawaysTab({ giveaways, onSave, onDelete }: { giveaways: any[]; onSav
 
       {(showAddModal || editingGiveaway) && (
         <GiveawayModal 
+          key={editingGiveaway ? editingGiveaway.id : 'new'}
           initialData={editingGiveaway}
           onClose={() => { setShowAddModal(false); setEditingGiveaway(null); }}
-          onSave={(ga) => {
-            onSave(ga);
-            setShowAddModal(false);
-            setEditingGiveaway(null);
+          onSave={async (ga) => {
+            const success = await onSave(ga);
+            if (success) {
+              setShowAddModal(false);
+              setEditingGiveaway(null);
+            }
           }}
         />
       )}
@@ -905,8 +900,44 @@ export default function AdminDashboard() {
         body: JSON.stringify({ action, giveaway: ga })
       });
       const result = await res.json();
-      if (result.success) fetchGiveaways();
-    } catch (err) { console.error(err); }
+      if (result.success) {
+        fetchGiveaways();
+        return true;
+      } else {
+        alert(result.error || 'Failed to save giveaway');
+        return false;
+      }
+    } catch (err) {
+      console.error(err);
+      alert('An error occurred while saving the giveaway');
+      return false;
+    }
+  };
+
+  const handleSaveDeal = async (deal: any, isEdit: boolean) => {
+    try {
+      const action = isEdit ? 'admin_update' : 'admin_create';
+      const res = await fetch('/api/deals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-key': sessionStorage.getItem('admin_key') || ''
+        },
+        body: JSON.stringify({ action, deal })
+      });
+      const result = await res.json();
+      if (result.success) {
+        fetchDeals();
+        return true;
+      } else {
+        alert(result.error || 'Failed to save deal');
+        return false;
+      }
+    } catch (err) {
+      console.error(err);
+      alert('An error occurred while saving the deal');
+      return false;
+    }
   };
 
   // Splash
@@ -1142,7 +1173,7 @@ export default function AdminDashboard() {
               <OverviewTab deals={deals} giveaways={giveaways} traffic={traffic} />
             )}
             {activeTab === 'deals' && (
-              <DealsTab deals={deals} loading={loading} onDelete={handleDelete} onRefresh={fetchDeals} />
+              <DealsTab deals={deals} loading={loading} onDelete={handleDelete} onSave={handleSaveDeal} />
             )}
             {activeTab === 'giveaways' && (
               <GiveawaysTab giveaways={giveaways} onSave={handleSaveGiveaway} onDelete={handleDeleteGiveaway} />

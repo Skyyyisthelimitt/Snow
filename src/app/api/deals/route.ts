@@ -78,7 +78,7 @@ export async function POST(request: Request) {
     if (body.action === 'admin_update') {
       const { id } = body.deal;
       const updatedDeals = deals.map((d: any) => {
-        if (d.id === id) {
+        if (String(d.id) === String(id)) {
           return {
             ...d,
             firmName: body.deal.firmName,

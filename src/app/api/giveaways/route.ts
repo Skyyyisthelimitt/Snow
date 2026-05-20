@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     if (body.action === 'admin_update') {
       const { id } = body.giveaway;
       const updatedGiveaways = giveaways.map((g: any) => {
-        if (g.id === id) {
+        if (String(g.id) === String(id)) {
           return {
             ...g,
             firmName: body.giveaway.firmName,
