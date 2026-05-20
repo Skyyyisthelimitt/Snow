@@ -257,7 +257,7 @@ function DealModal({ initialData, onClose, onSave }: { initialData?: any, onClos
     isFeatured: false,
   });
 
-  const handleChange = (field: string, val: any) => setFormData(p => ({ ...p, [field]: val }));
+  const handleChange = (field: string, val: any) => setFormData((p: any) => ({ ...p, [field]: val }));
 
   return (
     <Portal>
@@ -486,7 +486,7 @@ function GiveawayModal({ initialData, onClose, onSave }: { initialData?: any, on
     status: 'Active',
   });
 
-  const handleChange = (field: string, val: any) => setFormData(p => ({ ...p, [field]: val }));
+  const handleChange = (field: string, val: any) => setFormData((p: any) => ({ ...p, [field]: val }));
 
   return (
     <Portal>
