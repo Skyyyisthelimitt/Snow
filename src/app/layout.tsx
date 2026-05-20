@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter, Outfit, Plus_Jakarta_Sans } from "next/font/google";
-import TrackVisit from "@/components/TrackVisit";
 import "./globals.css";
 
 const inter = Inter({
@@ -31,7 +30,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable} ${jakarta.variable}`}>
       <body>
-        <TrackVisit />
         {children}
       </body>
     </html>

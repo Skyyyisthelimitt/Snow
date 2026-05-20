@@ -13,6 +13,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import Footer from '@/components/Footer';
+import TrackVisit from '@/components/TrackVisit';
 
 const partners = [
   { name: 'Alpha Futures', logo: '/alphafutures-latest.svg' },
@@ -48,6 +49,7 @@ export default function Home() {
   const activeDeals = deals.filter((d: any) => d.status === 'Active');
   return (
     <main className="min-h-screen bg-background relative overflow-y-auto overflow-x-hidden">
+      <TrackVisit />
       <Navbar />
       
       {/* Hero Section */}

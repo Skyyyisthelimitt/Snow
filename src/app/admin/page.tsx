@@ -194,16 +194,16 @@ function TableHeader({ title, sub, accentTitle, searchValue, onSearch, searchPla
 function OverviewTab({ deals, giveaways, traffic }: { deals: any[]; giveaways: any[]; traffic: { visits: number; clicks: number } }) {
   const activeDeals = deals.filter(d => d.status === 'Active');
   const pendingDeals = deals.filter(d => d.status === 'Pending');
-  const totalClicks = traffic.clicks || deals.reduce((s, d) => s + (d.claimedCount || 0), 0);
-  const totalVisits = traffic.visits || 12450;
+  const totalClicks = typeof traffic.clicks === 'number' ? traffic.clicks : deals.reduce((s, d) => s + (d.claimedCount || 0), 0);
+  const totalVisits = typeof traffic.visits === 'number' ? traffic.visits : 0;
   const conversionRate = totalVisits > 0 ? ((totalClicks / totalVisits) * 100).toFixed(1) + '%' : '0.0%';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
       {/* Stats Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
-        <StatCard label="Total Visits" value={totalVisits.toLocaleString()} sub="Lifetime live views" delta="+1.2%" icon={<IconActivity />} />
-        <StatCard label="Deal Clicks" value={totalClicks.toLocaleString()} sub="Coupon & referral clicks" delta="+2.5%" icon={<IconActivity />} />
+        <StatCard label="Total Visits" value={totalVisits.toLocaleString()} sub="Lifetime live views" icon={<IconActivity />} />
+        <StatCard label="Deal Clicks" value={totalClicks.toLocaleString()} sub="Coupon & referral clicks" icon={<IconActivity />} />
         <StatCard label="Avg. Conversion" value={conversionRate} sub="Visit to click ratio" accent icon={<IconTrendUp />} />
         <StatCard label="Active Deals" value={String(activeDeals.length)} sub="Live right now" icon={<IconDeals />} />
         <StatCard label="Giveaways" value={String(giveaways.length)} sub="Running campaigns" icon={<IconGiveaways />} />
@@ -763,7 +763,7 @@ export default function AdminDashboard() {
 
   const [giveaways, setGiveaways] = useState<any[]>([]);
   const [refreshing, setRefreshing] = useState(false);
-  const [traffic, setTraffic] = useState<{ visits: number; clicks: number }>({ visits: 12450, clicks: 3820 });
+  const [traffic, setTraffic] = useState<{ visits: number; clicks: number }>({ visits: 0, clicks: 0 });
 
   const fetchDeals = async () => {
     try {

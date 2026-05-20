@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import PixelBlast from '@/components/PixelBlast';
 import Footer from '@/components/Footer';
 import GiveawayCard from '@/components/GiveawayCard';
+import TrackVisit from '@/components/TrackVisit';
 import React, { useState, useEffect } from 'react';
 
 export default function GiveawaysPage() {
@@ -28,6 +29,7 @@ export default function GiveawaysPage() {
     fetchGiveaways();
   }, []);  return (
     <main className="min-h-screen bg-background relative overflow-y-auto overflow-x-hidden flex flex-col">
+      <TrackVisit />
       <Navbar />
       
       {/* Background Glow */}
