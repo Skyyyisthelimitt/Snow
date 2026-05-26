@@ -11,7 +11,16 @@ interface GiveawayCardProps {
 
 export default function GiveawayCard({ tweetId, joinLink }: GiveawayCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const href = joinLink || `https://x.com/i/status/${tweetId}`;
+  
+  // Safely extract tweet ID in case the user input a full URL or it's empty
+  const cleanTweetId = (() => {
+    if (!tweetId) return '';
+    if (/^\d+$/.test(tweetId)) return tweetId;
+    const match = tweetId.match(/(?:x\.com|twitter\.com)\/.*\/status\/(\d+)/);
+    return match ? match[1] : '';
+  })();
+
+  const href = joinLink || (cleanTweetId ? `https://x.com/i/status/${cleanTweetId}` : '#');
 
   return (
     <div className="relative p-5 md:p-6 rounded-[20px] flex flex-col gap-3 overflow-hidden group border border-white/5 hover:border-white/10 transition-all duration-500 bg-[#09090b] shadow-2xl w-full">
@@ -84,7 +93,13 @@ export default function GiveawayCard({ tweetId, joinLink }: GiveawayCardProps) {
           [&_p]:!leading-relaxed"
         style={{ zoom: 0.85 }}
       >
-        <Tweet id={tweetId} />
+        {cleanTweetId ? (
+          <Tweet id={cleanTweetId} />
+        ) : (
+          <div className="w-full h-[220px] flex items-center justify-center text-white/50 text-sm border border-white/10 rounded-xl bg-white/5">
+            No valid Tweet ID provided
+          </div>
+        )}
       </div>
 
       {/* Action Button */}
