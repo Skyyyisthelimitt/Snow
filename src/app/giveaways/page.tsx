@@ -1,33 +1,18 @@
-/* eslint-disable @next/next/no-img-element */
-'use client';
-
 import Navbar from '@/components/Navbar';
 import PixelBlast from '@/components/PixelBlast';
 import Footer from '@/components/Footer';
 import GiveawayCard from '@/components/GiveawayCard';
 import TrackVisit from '@/components/TrackVisit';
-import React, { useState, useEffect } from 'react';
+import { getStorageAdapter } from '@/lib/storage';
 
-export default function GiveawaysPage() {
-  const [giveaways, setGiveaways] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+export const dynamic = 'force-dynamic';
 
-  useEffect(() => {
-    async function fetchGiveaways() {
-      try {
-        const response = await fetch('/api/giveaways', { cache: 'no-store' });
-        const data = await response.json();
-        if (Array.isArray(data)) {
-          setGiveaways(data.filter((g: any) => g.status === 'Active'));
-        }
-      } catch (error) {
-        console.error('Failed to fetch giveaways:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchGiveaways();
-  }, []);  return (
+export default async function GiveawaysPage() {
+  const storage = await getStorageAdapter();
+  const data = await storage.getGiveaways();
+  const giveaways = (data || []).filter((g: any) => g.status === 'Active');
+
+  return (
     <main className="min-h-screen bg-background relative overflow-y-auto overflow-x-hidden flex flex-col">
       <TrackVisit />
       <Navbar />
@@ -80,14 +65,12 @@ export default function GiveawaysPage() {
         {/* Giveaway Cards Grid */}
         <div className="relative z-10 w-full px-6 md:px-12 pointer-events-auto animate-fade-in mb-32 flex justify-center">
           <div className="w-full max-w-7xl flex flex-wrap justify-start items-start gap-8">
-            {loading ? (
-              <div className="w-full text-center py-20 text-white/50 text-lg">Loading active giveaways...</div>
-            ) : giveaways.length === 0 ? (
+            {giveaways.length === 0 ? (
               <div className="w-full text-center py-20 text-white/50 text-lg">No active giveaways at the moment. Check back later!</div>
             ) : (
               giveaways.map((ga: any) => (
                 <div key={ga.id} className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-md">
-                  <GiveawayCard tweetId={ga.tweetId} />
+                  <GiveawayCard tweetId={ga.tweetId} joinLink={ga.link} />
                 </div>
               ))
             )}

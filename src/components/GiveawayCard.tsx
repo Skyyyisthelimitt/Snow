@@ -1,6 +1,4 @@
-'use client';
-
-import React, { useState } from 'react';
+import React from 'react';
 import { Tweet } from 'react-tweet';
 import { ArrowRight01Icon } from 'hugeicons-react';
 
@@ -10,8 +8,6 @@ interface GiveawayCardProps {
 }
 
 export default function GiveawayCard({ tweetId, joinLink }: GiveawayCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  
   // Safely extract tweet ID in case the user input a full URL or it's empty
   const cleanTweetId = (() => {
     if (!tweetId) return '';
@@ -108,29 +104,7 @@ export default function GiveawayCard({ tweetId, joinLink }: GiveawayCardProps) {
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          style={{
-            width: '100%',
-            paddingTop: '12px',
-            paddingBottom: '12px',
-            backgroundColor: isHovered ? '#1ea2e6' : '#26B5FF',
-            color: '#000000',
-            fontWeight: '900',
-            fontSize: '11px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
-            borderRadius: '12px',
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-            transform: isHovered ? 'scale(1.02)' : 'scale(1)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            boxShadow: isHovered ? '0 0 25px rgba(38,181,255,0.4)' : '0 0 20px rgba(38,181,255,0.25)',
-            cursor: 'pointer',
-            textDecoration: 'none'
-          }}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          className="w-full py-3 bg-[#26B5FF] hover:bg-[#1ea2e6] text-black font-black text-[11px] uppercase tracking-[0.15em] rounded-xl transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(38,181,255,0.25)] hover:shadow-[0_0_25px_rgba(38,181,255,0.4)] cursor-pointer no-underline"
         >
           Join Giveaway <ArrowRight01Icon size={18} strokeWidth={2.5} />
         </a>
