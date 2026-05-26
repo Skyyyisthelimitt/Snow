@@ -3,13 +3,12 @@ import PixelBlast from '@/components/PixelBlast';
 import Footer from '@/components/Footer';
 import GiveawayCard from '@/components/GiveawayCard';
 import TrackVisit from '@/components/TrackVisit';
-import { getStorageAdapter } from '@/lib/storage';
+import { readGiveaways } from '@/lib/storage';
 
 export const dynamic = 'force-dynamic';
 
 export default async function GiveawaysPage() {
-  const storage = await getStorageAdapter();
-  const data = await storage.getGiveaways();
+  const data = await readGiveaways();
   const giveaways = (data || []).filter((g: any) => g.status === 'Active');
 
   return (
