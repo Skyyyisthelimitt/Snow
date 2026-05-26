@@ -1,5 +1,6 @@
 import React from 'react';
-import { Tweet } from 'react-tweet';
+import { EmbeddedTweet, TweetNotFound } from 'react-tweet';
+import { getTweet } from 'react-tweet/api';
 import { ArrowRight01Icon } from 'hugeicons-react';
 
 interface GiveawayCardProps {
@@ -7,7 +8,7 @@ interface GiveawayCardProps {
   joinLink?: string; // Optional, defaults to the tweet url
 }
 
-export default function GiveawayCard({ tweetId, joinLink }: GiveawayCardProps) {
+export default async function GiveawayCard({ tweetId, joinLink }: GiveawayCardProps) {
   // Safely extract tweet ID in case the user input a full URL or it's empty
   const cleanTweetId = (() => {
     if (!tweetId) return '';
@@ -17,6 +18,15 @@ export default function GiveawayCard({ tweetId, joinLink }: GiveawayCardProps) {
   })();
 
   const href = joinLink || (cleanTweetId ? `https://x.com/i/status/${cleanTweetId}` : '#');
+
+  let tweet;
+  try {
+    if (cleanTweetId) {
+      tweet = await getTweet(cleanTweetId).catch(() => undefined);
+    }
+  } catch (err) {
+    console.error('Failed to load tweet:', cleanTweetId);
+  }
 
   return (
     <div className="relative p-5 md:p-6 rounded-[20px] flex flex-col gap-3 overflow-hidden group border border-white/5 hover:border-white/10 transition-all duration-500 bg-[#09090b] shadow-2xl w-full">
@@ -89,8 +99,13 @@ export default function GiveawayCard({ tweetId, joinLink }: GiveawayCardProps) {
           [&_p]:!leading-relaxed"
         style={{ zoom: 0.85 }}
       >
-        {cleanTweetId ? (
-          <Tweet id={cleanTweetId} />
+        {cleanTweetId && tweet ? (
+          <EmbeddedTweet tweet={tweet} />
+        ) : cleanTweetId ? (
+          <div className="w-full h-[220px] flex flex-col items-center justify-center text-white/50 text-sm border border-white/10 rounded-xl bg-white/5">
+            <span className="text-white/80 font-bold mb-2">Giveaway Unavailable</span>
+            <span className="text-xs text-white/40">This post may have been deleted or the ID is invalid.</span>
+          </div>
         ) : (
           <div className="w-full h-[220px] flex items-center justify-center text-white/50 text-sm border border-white/10 rounded-xl bg-white/5">
             No valid Tweet ID provided
