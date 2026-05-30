@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/accordion"
 import Footer from '@/components/Footer';
 import TrackVisit from '@/components/TrackVisit';
+import ComingSoon from '@/components/ComingSoon';
+
 
 const partners = [
   { name: 'Alpha Futures', logo: '/alphafutures-latest.svg' },
@@ -28,6 +30,14 @@ const partners = [
 export default function Home() {
   const [deals, setDeals] = useState<any[]>([]);
   const [dealsLoading, setDealsLoading] = useState(true);
+  const [isBeforeLaunch, setIsBeforeLaunch] = useState(false);
+
+  useEffect(() => {
+    const launchDate = new Date(process.env.NEXT_PUBLIC_LAUNCH_DATE!);
+    if (Date.now() < launchDate.getTime()) {
+      setIsBeforeLaunch(true);
+    }
+  }, []);
 
   useEffect(() => {
     async function fetchDeals() {
@@ -47,6 +57,9 @@ export default function Home() {
   }, []);
 
   const activeDeals = deals.filter((d: any) => d.status === 'Active');
+
+  if (isBeforeLaunch) return <ComingSoon />;
+
   return (
     <main className="min-h-screen bg-background relative overflow-y-auto overflow-x-hidden">
       <TrackVisit />
