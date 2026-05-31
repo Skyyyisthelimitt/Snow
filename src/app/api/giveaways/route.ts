@@ -35,6 +35,9 @@ export async function POST(request: Request) {
         status: body.giveaway.status || 'Active',
         entriesCount: 0,
         dateAdded: new Date().toISOString().split('T')[0],
+        customTitle: body.giveaway.customTitle || '',
+        customDescription: body.giveaway.customDescription || '',
+        customImage: body.giveaway.customImage || '',
       };
       giveaways.unshift(newGiveaway);
       await writeGiveaways(giveaways);
@@ -51,6 +54,9 @@ export async function POST(request: Request) {
             tweetId: body.giveaway.tweetId,
             challengeSize: body.giveaway.challengeSize,
             status: body.giveaway.status,
+            customTitle: body.giveaway.customTitle || '',
+            customDescription: body.giveaway.customDescription || '',
+            customImage: body.giveaway.customImage || '',
           };
         }
         return g;

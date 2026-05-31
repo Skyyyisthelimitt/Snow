@@ -531,6 +531,9 @@ function GiveawayModal({ initialData, onClose, onSave }: { initialData?: any, on
     challengeSize: '$50K Challenge',
     tweetId: '1234567890123456789',
     status: 'Active',
+    customTitle: '',
+    customDescription: '',
+    customImage: '',
     ...initialData
   }));
 
@@ -544,7 +547,7 @@ function GiveawayModal({ initialData, onClose, onSave }: { initialData?: any, on
     }}>
       <div style={{
         background: '#0c1220', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12,
-        width: '100%', maxWidth: 700, margin: '0 auto', display: 'flex', flexDirection: 'column',
+        width: '100%', maxWidth: 750, margin: '0 auto', display: 'flex', flexDirection: 'column',
         boxShadow: '0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(38,181,255,0.2)',
       }}>
         <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(15,23,42,0.6)' }}>
@@ -556,7 +559,7 @@ function GiveawayModal({ initialData, onClose, onSave }: { initialData?: any, on
             onMouseOver={e => (e.currentTarget.style.color = '#fff')} onMouseOut={e => (e.currentTarget.style.color = '#8b9bb4')}>×</button>
         </div>
         
-        <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16, maxHeight: '70vh', overflowY: 'auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <label style={{ fontSize: 12, fontWeight: 700, color: '#8b9bb4', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Prop Firm Name</label>
@@ -567,7 +570,7 @@ function GiveawayModal({ initialData, onClose, onSave }: { initialData?: any, on
               <input type="text" value={formData.challengeSize} onChange={e => handleChange('challengeSize', e.target.value)} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px 16px', color: '#fff', borderRadius: 6, fontSize: 14 }} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <label style={{ fontSize: 12, fontWeight: 700, color: '#8b9bb4', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Tweet ID</label>
+              <label style={{ fontSize: 12, fontWeight: 700, color: '#8b9bb4', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Tweet ID / URL</label>
               <input type="text" value={formData.tweetId} onChange={e => handleChange('tweetId', e.target.value)} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px 16px', color: '#fff', borderRadius: 6, fontSize: 14, fontFamily: 'monospace' }} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -576,6 +579,49 @@ function GiveawayModal({ initialData, onClose, onSave }: { initialData?: any, on
                 <option value="Active" style={{ background: '#0c1220' }}>Active</option>
                 <option value="Expired" style={{ background: '#0c1220' }}>Expired</option>
               </select>
+            </div>
+            
+            {/* Custom Fallback Fields Header */}
+            <div style={{ gridColumn: 'span 2', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: 16, marginTop: 8 }}>
+              <h4 style={{ fontSize: 13, fontWeight: 800, color: '#26B5FF', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>Custom Fallback Info (Optional)</h4>
+              <p style={{ fontSize: 11, color: '#8b9bb4' }}>This content displays if Twitter block or deletion occurs.</p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, gridColumn: 'span 2' }}>
+              <label style={{ fontSize: 12, fontWeight: 700, color: '#8b9bb4', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Custom Title</label>
+              <input type="text" value={formData.customTitle} onChange={e => handleChange('customTitle', e.target.value)} placeholder="e.g. Free $50K Challenge Giveaway!" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px 16px', color: '#fff', borderRadius: 6, fontSize: 14 }} />
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, gridColumn: 'span 2' }}>
+              <label style={{ fontSize: 12, fontWeight: 700, color: '#8b9bb4', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Custom Description</label>
+              <textarea rows={3} value={formData.customDescription} onChange={e => handleChange('customDescription', e.target.value)} placeholder="Describe the giveaway steps or rewards..." style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px 16px', color: '#fff', borderRadius: 6, fontSize: 14, resize: 'none' }} />
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, gridColumn: 'span 2' }}>
+              <label style={{ fontSize: 12, fontWeight: 700, color: '#8b9bb4', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Custom Banner Image</label>
+              <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                <label style={{
+                  background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(255,255,255,0.2)', padding: '12px 16px', color: '#8b9bb4', borderRadius: 6, fontSize: 14, cursor: 'pointer', textAlign: 'center', flex: 1, transition: 'all 0.2s'
+                }} onMouseOver={e => { e.currentTarget.style.borderColor = '#26B5FF'; e.currentTarget.style.color = '#fff'; }} onMouseOut={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; e.currentTarget.style.color = '#8b9bb4'; }}>
+                  {formData.customImage && formData.customImage.startsWith('data:image') ? 'Image Selected (Click to change)' : 'Click to Upload Image...'}
+                  <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = (ev) => {
+                        handleChange('customImage', ev.target?.result as string);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }} />
+                </label>
+                {formData.customImage && formData.customImage.startsWith('data:image') && (
+                  <div style={{ width: 60, height: 44, borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', flexShrink: 0, background: '#000' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={formData.customImage} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

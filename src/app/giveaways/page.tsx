@@ -5,7 +5,7 @@ import GiveawayCard from '@/components/GiveawayCard';
 import TrackVisit from '@/components/TrackVisit';
 import { readGiveaways } from '@/lib/storage';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 18000;
 
 export default async function GiveawaysPage() {
   const data = await readGiveaways();
@@ -69,7 +69,13 @@ export default async function GiveawaysPage() {
             ) : (
               giveaways.map((ga: any) => (
                 <div key={ga.id} className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-md">
-                  <GiveawayCard tweetId={ga.tweetId} joinLink={ga.link} />
+                  <GiveawayCard 
+                    tweetId={ga.tweetId} 
+                    joinLink={ga.link} 
+                    customTitle={ga.customTitle}
+                    customDescription={ga.customDescription}
+                    customImage={ga.customImage}
+                  />
                 </div>
               ))
             )}

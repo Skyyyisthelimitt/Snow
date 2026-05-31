@@ -1,14 +1,58 @@
 import React from 'react';
-import { EmbeddedTweet, TweetNotFound } from 'react-tweet';
+import { EmbeddedTweet } from 'react-tweet';
 import { getTweet } from 'react-tweet/api';
 import { ArrowRight01Icon } from 'hugeicons-react';
 
 interface GiveawayCardProps {
   tweetId: string;
   joinLink?: string; // Optional, defaults to the tweet url
+  customTitle?: string;
+  customDescription?: string;
+  customImage?: string;
 }
 
-export default async function GiveawayCard({ tweetId, joinLink }: GiveawayCardProps) {
+/** 
+ * Safely loads a tweet, returning null for NSFW, deleted, tombstoned, or any
+ * other unavailable state. Deeply sanitizes the tweet object to prevent
+ * react-tweet from crashing on malformed entities (like empty objects).
+ */
+async function safeGetTweet(id: string): Promise<any> {
+  try {
+    const tweet = await getTweet(id);
+    if (!tweet || typeof tweet !== 'object' || !('id_str' in tweet)) return null;
+    
+    // Deep sanitize entities to prevent react-tweet rendering crashes
+    const sanitizeEntities = (t: any) => {
+      if (!t || typeof t !== 'object') return;
+      if (!t.entities || typeof t.entities !== 'object') t.entities = {};
+      const e = t.entities;
+      
+      // react-tweet blindly iterates over these, so they MUST be arrays
+      if (!Array.isArray(e.hashtags)) e.hashtags = [];
+      if (!Array.isArray(e.urls)) e.urls = [];
+      if (!Array.isArray(e.user_mentions)) e.user_mentions = [];
+      if (!Array.isArray(e.symbols)) e.symbols = [];
+      
+      // react-tweet checks `if (e.media)` and then accesses `e.media[0]`. 
+      // If e.media is `[]`, it crashes. So we must delete it if empty.
+      if (e.media && (!Array.isArray(e.media) || e.media.length === 0)) delete e.media;
+      
+      if (t.photos && !Array.isArray(t.photos)) delete t.photos;
+      if (t.mediaDetails && !Array.isArray(t.mediaDetails)) delete t.mediaDetails;
+    };
+
+    sanitizeEntities(tweet);
+    if (tweet.quoted_tweet) {
+      sanitizeEntities(tweet.quoted_tweet);
+    }
+
+    return tweet;
+  } catch {
+    return null;
+  }
+}
+
+export default async function GiveawayCard({ tweetId, joinLink, customTitle, customDescription, customImage }: GiveawayCardProps) {
   // Safely extract tweet ID in case the user input a full URL or it's empty
   const cleanTweetId = (() => {
     if (!tweetId) return '';
@@ -19,17 +63,10 @@ export default async function GiveawayCard({ tweetId, joinLink }: GiveawayCardPr
 
   const href = joinLink || (cleanTweetId ? `https://x.com/i/status/${cleanTweetId}` : '#');
 
-  let tweet;
-  try {
-    if (cleanTweetId) {
-      tweet = await getTweet(cleanTweetId).catch(() => undefined);
-    }
-  } catch (err) {
-    console.error('Failed to load tweet:', cleanTweetId);
-  }
+  const tweet = cleanTweetId ? await safeGetTweet(cleanTweetId) : null;
 
   return (
-    <div className="relative p-5 md:p-6 rounded-[20px] flex flex-col gap-3 overflow-hidden group border border-white/5 hover:border-white/10 transition-all duration-500 bg-[#09090b] shadow-2xl w-full">
+    <div className="relative p-5 pb-5 md:p-6 md:pb-6 rounded-[20px] flex flex-col gap-4 overflow-hidden group border border-white/5 hover:border-white/10 transition-all duration-500 bg-[#09090b] shadow-2xl w-full">
       
       {/* Dynamic CSS Overrides - 100% immune to local browser CSS caching! */}
       <style dangerouslySetInnerHTML={{ __html: `
@@ -101,6 +138,25 @@ export default async function GiveawayCard({ tweetId, joinLink }: GiveawayCardPr
       >
         {cleanTweetId && tweet ? (
           <EmbeddedTweet tweet={tweet} />
+        ) : (customTitle || customDescription || customImage) ? (
+          <div className="w-full flex flex-col items-center justify-start border border-white/10 rounded-xl bg-white/5 overflow-hidden">
+            {customImage && (
+              <div className="w-full h-[140px] overflow-hidden border-b border-white/10">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={customImage} alt={customTitle || "Giveaway"} className="w-full h-full object-cover" />
+              </div>
+            )}
+            <div className="p-4 w-full text-left flex flex-col gap-2">
+              <span className="text-white font-bold text-sm tracking-tight leading-tight">
+                {customTitle || "Special Giveaway"}
+              </span>
+              {customDescription && (
+                <p className="text-xs text-white/60 leading-relaxed line-clamp-3">
+                  {customDescription}
+                </p>
+              )}
+            </div>
+          </div>
         ) : cleanTweetId ? (
           <div className="w-full h-[220px] flex flex-col items-center justify-center text-white/50 text-sm border border-white/10 rounded-xl bg-white/5">
             <span className="text-white/80 font-bold mb-2">Giveaway Unavailable</span>
@@ -114,16 +170,18 @@ export default async function GiveawayCard({ tweetId, joinLink }: GiveawayCardPr
       </div>
 
       {/* Action Button */}
-      <div className="relative z-10 mt-1">
-        <a 
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full py-3 bg-[#26B5FF] hover:bg-[#1ea2e6] text-black font-black text-[11px] uppercase tracking-[0.15em] rounded-xl transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(38,181,255,0.25)] hover:shadow-[0_0_25px_rgba(38,181,255,0.4)] cursor-pointer no-underline"
-        >
-          Join Giveaway <ArrowRight01Icon size={18} strokeWidth={2.5} />
-        </a>
-      </div>
+      <a 
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: '#000000' }}
+        className="relative z-10 w-full h-[42px] bg-[#26B5FF] hover:bg-[#1ea2e6] font-black text-[11px] uppercase tracking-[0.15em] rounded-xl transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center gap-1.5 shadow-[0_0_20px_rgba(38,181,255,0.25)] hover:shadow-[0_0_30px_rgba(38,181,255,0.45)] cursor-pointer no-underline"
+      >
+        JOIN GIVEAWAY 
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" className="ml-0.5">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </a>
     </div>
   );
 }
