@@ -15,7 +15,12 @@ export async function POST(request: Request) {
 
     const adminActions = ['approve', 'delete', 'admin_create', 'admin_update', 'reorder'];
     if (body.action && adminActions.includes(body.action)) {
-      const correctPassword = process.env.ADMIN_PASSWORD || 'skyadmin123';
+      const correctPassword = process.env.ADMIN_PASSWORD;
+      if (!correctPassword) {
+        console.error('CRITICAL: ADMIN_PASSWORD environment variable is not set!');
+        return NextResponse.json({ success: false, error: 'Server configuration error' }, { status: 500 });
+      }
+      
       const clientKey = request.headers.get('x-admin-key');
       if (clientKey !== correctPassword) {
         return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
@@ -112,30 +117,40 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true, message: 'Deal updated successfully!' });
     }
 
-    const newDeal = {
-      id: String(Date.now()),
-      firmName: body.firmName || 'Unnamed Prop Firm',
-      discount: body.discount || 'Special Discount',
-      logo: '/yrmpfp.jpg',
-      description: body.deliverables || 'Exclusive B2B partnership deal.',
-      expiresIn: 259200,
-      claimedCount: 0,
-      promoCode: 'SNOW',
-      link: body.link || 'https://snowpropdeals.com',
-      isHot: false,
-      isFeatured: false,
-      status: 'Pending',
-      contactEmail: body.contactEmail || '',
-      contactTelegram: body.contactTelegram || '',
-      commission: body.commission || 'N/A',
-      retainer: body.retainer || 'N/A',
-      deliverables: body.deliverables || ''
-    };
+    if (!body.action || !adminActions.includes(body.action)) {
+      // Basic validation for public submissions
+      if (!body.firmName || typeof body.firmName !== 'string' || body.firmName.trim().length === 0 || body.firmName.length > 100) {
+        return NextResponse.json({ success: false, error: 'Invalid firm name' }, { status: 400 });
+      }
+      if (!body.contactEmail || typeof body.contactEmail !== 'string' || !body.contactEmail.includes('@') || body.contactEmail.length > 100) {
+        return NextResponse.json({ success: false, error: 'Invalid contact email' }, { status: 400 });
+      }
 
-    deals.push(newDeal);
-    await writeDeals(deals);
+      const newDeal = {
+        id: String(Date.now()),
+        firmName: body.firmName.trim(),
+        discount: typeof body.discount === 'string' ? body.discount.slice(0, 50) : 'Special Discount',
+        logo: '/yrmpfp.jpg',
+        description: typeof body.deliverables === 'string' ? body.deliverables.slice(0, 500) : 'Exclusive B2B partnership deal.',
+        expiresIn: 259200,
+        claimedCount: 0,
+        promoCode: 'SNOW',
+        link: typeof body.link === 'string' ? body.link.slice(0, 200) : 'https://snowpropdeals.com',
+        isHot: false,
+        isFeatured: false,
+        status: 'Pending',
+        contactEmail: body.contactEmail.trim(),
+        contactTelegram: typeof body.contactTelegram === 'string' ? body.contactTelegram.slice(0, 50) : '',
+        commission: typeof body.commission === 'string' ? body.commission.slice(0, 50) : 'N/A',
+        retainer: typeof body.retainer === 'string' ? body.retainer.slice(0, 50) : 'N/A',
+        deliverables: typeof body.deliverables === 'string' ? body.deliverables.slice(0, 500) : ''
+      };
 
-    return NextResponse.json({ success: true, deal: newDeal });
+      deals.push(newDeal);
+      await writeDeals(deals);
+
+      return NextResponse.json({ success: true, deal: newDeal });
+    }
   } catch (error) {
     console.error('API Error:', error);
     return NextResponse.json({ success: false, error: 'Internal Server Error' }, { status: 500 });

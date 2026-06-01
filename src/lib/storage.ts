@@ -41,13 +41,18 @@ async function readFileWithTmp(tmpPath: string, srcPath: string, defaultVal: any
   try {
     const data = await fs.readFile(tmpPath, 'utf-8');
     return JSON.parse(data);
-  } catch {
+  } catch (err1) {
     try {
       const data = await fs.readFile(srcPath, 'utf-8');
       const parsed = JSON.parse(data);
-      try { await fs.writeFile(tmpPath, JSON.stringify(parsed, null, 2), 'utf-8'); } catch {}
+      try { 
+        await fs.writeFile(tmpPath, JSON.stringify(parsed, null, 2), 'utf-8'); 
+      } catch (writeErr) {
+        console.error(`Failed to cache ${srcPath} to ${tmpPath}:`, writeErr);
+      }
       return parsed;
-    } catch {
+    } catch (err2) {
+      console.warn(`Failed to read from both ${tmpPath} and ${srcPath}. Returning default value.`);
       return defaultVal;
     }
   }
@@ -56,8 +61,16 @@ async function readFileWithTmp(tmpPath: string, srcPath: string, defaultVal: any
 // Helper to handle writing to /tmp and src
 async function writeFileWithTmp(tmpPath: string, srcPath: string, data: any) {
   const json = JSON.stringify(data, null, 2);
-  try { await fs.writeFile(tmpPath, json, 'utf-8'); } catch {}
-  try { await fs.writeFile(srcPath, json, 'utf-8'); } catch {}
+  try { 
+    await fs.writeFile(tmpPath, json, 'utf-8'); 
+  } catch (err) {
+    console.error(`Failed to write to temporary path ${tmpPath}:`, err);
+  }
+  try { 
+    await fs.writeFile(srcPath, json, 'utf-8'); 
+  } catch (err) {
+    console.error(`Failed to write to source path ${srcPath}:`, err);
+  }
 }
 
 export async function readDeals(): Promise<any[]> {

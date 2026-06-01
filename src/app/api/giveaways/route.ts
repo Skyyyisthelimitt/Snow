@@ -10,7 +10,12 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const correctPassword = process.env.ADMIN_PASSWORD || 'skyadmin123';
+    const correctPassword = process.env.ADMIN_PASSWORD;
+    if (!correctPassword) {
+      console.error('CRITICAL: ADMIN_PASSWORD environment variable is not set!');
+      return NextResponse.json({ success: false, error: 'Server configuration error' }, { status: 500 });
+    }
+
     const clientKey = request.headers.get('x-admin-key');
     if (clientKey !== correctPassword) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });

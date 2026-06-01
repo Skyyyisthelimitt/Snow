@@ -4,8 +4,12 @@ export async function POST(request: Request) {
   try {
     const { password } = await request.json();
     
-    // Fallback to default if env is not loaded
-    const correctPassword = process.env.ADMIN_PASSWORD || 'skyadmin123';
+    const correctPassword = process.env.ADMIN_PASSWORD;
+    
+    if (!correctPassword) {
+      console.error('CRITICAL: ADMIN_PASSWORD environment variable is not set!');
+      return NextResponse.json({ success: false, error: 'Server configuration error' }, { status: 500 });
+    }
     
     if (password === correctPassword) {
       return NextResponse.json({ success: true });
