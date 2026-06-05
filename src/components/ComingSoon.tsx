@@ -33,7 +33,13 @@ export default function ComingSoon() {
   useEffect(() => {
     setMounted(true);
     const interval = setInterval(() => {
-      setTimeLeft(getTimeLeft(launchDate));
+      const remaining = getTimeLeft(launchDate);
+      setTimeLeft(remaining);
+      
+      // Auto-refresh exactly when the countdown hits zero
+      if (remaining.days === 0 && remaining.hours === 0 && remaining.minutes === 0 && remaining.seconds === 0) {
+        window.location.reload();
+      }
     }, 1000);
     return () => clearInterval(interval);
   }, []);
