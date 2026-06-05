@@ -5,7 +5,7 @@ import GiveawayCard from '@/components/GiveawayCard';
 import TrackVisit from '@/components/TrackVisit';
 import { readGiveaways } from '@/lib/storage';
 
-export const revalidate = 18000;
+export const revalidate = 14400; // 4 hours cache
 
 export default async function GiveawaysPage() {
   const data = await readGiveaways();

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { readGiveaways, writeGiveaways } from '@/lib/storage';
 
 export const dynamic = 'force-dynamic';
@@ -28,6 +29,7 @@ export async function POST(request: Request) {
       const { id } = body;
       const updatedGiveaways = giveaways.filter((g: any) => String(g.id) !== String(id));
       await writeGiveaways(updatedGiveaways);
+      revalidatePath('/giveaways');
       return NextResponse.json({ success: true, message: 'Giveaway deleted successfully!' });
     }
 
@@ -46,6 +48,7 @@ export async function POST(request: Request) {
       };
       giveaways.unshift(newGiveaway);
       await writeGiveaways(giveaways);
+      revalidatePath('/giveaways');
       return NextResponse.json({ success: true, giveaway: newGiveaway });
     }
 
@@ -67,6 +70,7 @@ export async function POST(request: Request) {
         return g;
       });
       await writeGiveaways(updatedGiveaways);
+      revalidatePath('/giveaways');
       return NextResponse.json({ success: true, message: 'Giveaway updated successfully!' });
     }
 
